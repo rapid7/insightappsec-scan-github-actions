@@ -1,0 +1,27 @@
+{
+    "name": "rapid7-insightappsec-scan",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "jest",
+        "coverage": "jest --coverage",
+        "build": "ncc build index.js -o dist"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@actions/core": "1.6.0",
+        "axios": "0.24.0"
+    },
+    "devDependencies": {
+        "@vercel/ncc": "0.31.1",
+        "eslint": "7.31.0",
+        "eslint-config-airbnb": "18.2.1",
+        "eslint-config-node": "4.1.0",
+        "eslint-config-prettier": "8.3.0",
+        "eslint-plugin-prettier": "3.4.0",
+        "prettier": "2.3.2",
+        "jest": "27.4.3"
+    }
+}
