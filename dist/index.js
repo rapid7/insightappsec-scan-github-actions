@@ -7,7 +7,7 @@
 const axios = __nccwpck_require__(6545);
 
 const APPLICATION_JSON = "application/json";
-const USER_AGENT_HEADER = "r7:insightappsec-github-actions/0.0.2";
+const USER_AGENT_HEADER = "r7:insightappsec-github-actions/1.0.0";
 
 class InsightAppSecClient {
 
@@ -5131,9 +5131,9 @@ RedirectableRequest.prototype._processResponse = function (response) {
     var redirectUrlParts = url.parse(redirectUrl);
     Object.assign(this._options, redirectUrlParts);
 
-    // Drop the Authorization header if redirecting to another domain
+    // Drop the confidential headers when redirecting to another domain
     if (!(redirectUrlParts.host === currentHost || isSubdomainOf(redirectUrlParts.host, currentHost))) {
-      removeMatchingHeaders(/^authorization$/i, this._options.headers);
+      removeMatchingHeaders(/^(?:authorization|cookie)$/i, this._options.headers);
     }
 
     // Evaluate the beforeRedirect callback
