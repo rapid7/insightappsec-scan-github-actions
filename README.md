@@ -46,7 +46,9 @@ jobs:
           api-key: ${{ secrets.IAS_API_KEY }}
           scan-config-id: '999703e4-a4p0-4ea6-a3sc-53cg789e4fc1'
           vuln-query: 'vulnerability.vulnerabilityScore > 4'
-      - run: echo '${{ steps.my-scan.outputs.scan-findings }}'
+      - name: Upload findings
+        if: always()
+        run: echo '${{ steps.my-scan.outputs.scan-findings }}'
 ```
 
 ## Development
