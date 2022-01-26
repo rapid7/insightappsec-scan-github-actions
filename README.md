@@ -22,7 +22,8 @@ The InsightAppSec API key will need to be added as a GitHub secret in order for 
     # The UUID of the scan configuration to be used during scanning. The scan configuration should be a sub-resource of
     # the application and can be obtained from InsightAppSec.
     scan-config-id: '999703e4-a4p0-4ea6-a3sc-53cg789e4fc1'
-    # Scan gating query. Used to filter results by vulnerability properties.
+    # Scan gating query. Used to filter results by vulnerability properties. If this has a value and the query returns
+    # vulnerabilities from the scan then the job will fail.
     vuln-query: 'vulnerability.vulnerabilityScore > 4'
     # If false the Scan ID will be returned as soon as the scan is kicked off, else the workflow will continually poll 
     # until the scan is completed and return the results. Defaults to true.
