@@ -11,7 +11,7 @@ The InsightAppSec API key will need to be added as a GitHub secret in order for 
 ## Usage
 
 ```yaml
-- uses: rapid7/insightappsec-scan-github-actions
+- uses: rapid7/insightappsec-scan-github-actions@v1.1.0
   with:
     # The region indicates the geo-location of the Insight Platform. For example 'us'.
     region: "us"
@@ -23,7 +23,7 @@ The InsightAppSec API key will need to be added as a GitHub secret in order for 
     # the application and can be obtained from InsightAppSec.
     scan-config-id: "999703e4-a4p0-4ea6-a3sc-53cg789e4fc1"
     # Scan gating query. Used to filter results by vulnerability properties. If this has a value and the query returns
-    # vulnerabilities from the scan then the job will fail. The format of the scan gating query should conform to the 
+    # vulnerabilities from the scan then the job will be marked as failed. The format of the scan gating query should conform to the 
     # VULNERABILITY search query format described in the documentation: 
     # https://help.rapid7.com/insightappsec/en-us/api/v1/docs.html#tag/Search
     vuln-query: "vulnerability.vulnerabilityScore > 4"
