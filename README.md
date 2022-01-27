@@ -23,7 +23,9 @@ The InsightAppSec API key will need to be added as a GitHub secret in order for 
     # the application and can be obtained from InsightAppSec.
     scan-config-id: '999703e4-a4p0-4ea6-a3sc-53cg789e4fc1'
     # Scan gating query. Used to filter results by vulnerability properties. If this has a value and the query returns
-    # vulnerabilities from the scan then the job will fail.
+    # vulnerabilities from the scan then the job will fail. The format of the scan gating query should conform to the 
+    # VULNERABILITY search query format described in the documentation: 
+    # https://help.rapid7.com/insightappsec/en-us/api/v1/docs.html#tag/Search
     vuln-query: 'vulnerability.vulnerabilityScore > 4'
     # If false the Scan ID will be returned as soon as the scan is kicked off, else the workflow will continually poll 
     # until the scan is completed and return the results. Defaults to true.
@@ -50,6 +52,11 @@ jobs:
       - name: Upload findings
         if: always()
         run: echo '${{ steps.my-scan.outputs.scan-findings }}'
+```
+
+Any vulnerability queries that contain double quotes e.g. `vulnerability.severity = "MEDIUM"` will need to be replaced with single quotes in order for it to work. For example:
+```yaml
+  vuln-query: vulnerability.severity = 'MEDIUM'
 ```
 
 ## Development
