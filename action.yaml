@@ -29,7 +29,7 @@ inputs:
     default: true
   scan-timeout-mins:
     description: >
-      The maximum amount of time (in minutes) the scan is allowed to run before cancelling.
+      The maximum amount of time (in minutes) the scan is allowed to run before canceling and failing the job.
     required: false
 
 outputs:
