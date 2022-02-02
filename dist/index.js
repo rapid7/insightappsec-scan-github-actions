@@ -4977,6 +4977,10 @@ async function performAction() {
     if(scanTimeoutMins) {
         try{
             scanTimeoutMins = parseInt(scanTimeoutMins);
+            if(isNaN(scanTimeoutMins)) {
+                throw Error("Scan timeout is NaN");
+            }
+
             core.info(`Scan timeout: ${scanTimeoutMins} minutes`);
         }
         catch(e) {
