@@ -61,14 +61,22 @@ The body of a vulnerability query cannot contain double quotes ("), single quote
 
 ## Development
 To develop new versions of this action
-1. Make the required code updates
-2. From the root project directory, in a terminal execute
+1. Make the required code updates and test
+2. Remove node_modules and reinstall with the --production flag
+```
+npm install --production
+```
+3. Globally install the build tool
+```
+npm i -g @vercel/ncc@0.31.1
+```
+4. From the root project directory, in a terminal execute
 ```
 npm run build
 ```
-3. Add the contents of the /dist directory to the changelist.
-4. Submit the changes for review.
-5. Once approved and merged a tag should also be created. It's this tag that's referenced in the implementing yaml file, the below example uses a v1.0.0 tag.
+5. Add the contents of the /dist directory to the changelist.
+6. Submit the changes for review.
+7. Once approved and merged a tag should also be created. It's this tag that's referenced in the implementing yaml file, the below example uses a v1.0.0 tag.
 ```
 uses: rapid7/insightappsec-scan-github-actions@v1.0.0
 ```
