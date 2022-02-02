@@ -66,7 +66,7 @@ To develop new versions of this action
 ```
 npm install --production
 ```
-3. Globally install the build tool
+3. Globally install the build tool (only once)
 ```
 npm i -g @vercel/ncc@0.31.1
 ```
