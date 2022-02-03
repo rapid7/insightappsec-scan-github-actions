@@ -40,7 +40,7 @@ class InsightAppSecClient {
 
     getScanVulnerabilities(scanId, vulnQuery, nextLink) {
         let query = `vulnerability.scans.id='${scanId}'`;
-        if (vulnQuery != ""){
+        if (vulnQuery){
             query = `${query} && (${vulnQuery})`;
         }
         
