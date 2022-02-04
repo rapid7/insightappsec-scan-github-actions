@@ -27,7 +27,10 @@ inputs:
       Wait for scan to complete before finishing action. False will return the InsightAppSec Scan ID.
     required: false
     default: true
-      
+  scan-timeout-mins:
+    description: >
+      The maximum amount of time (in minutes) the scan is allowed to run before canceling and failing the job.
+    required: false
 
 outputs:
   scan-findings:
