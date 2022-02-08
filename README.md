@@ -1,14 +1,19 @@
-# Rapid7 InsightAppSec Scan for GitHub actions
+![InsightAppSec](https://brand.rapid7.com/includes/file/png/insightappsec-b-c.png)
+# InsightAppSec Scan action
+The InsightAppSec Scan GitHub Action allows security and development teams to integrate dynamic application security testing (DAST) into the CI/CD pipeline.
 
-This GitHub action will start a scan on Rapid7 InsightAppSec and depending on configuration either:
+# About InsightAppSec
+[InsightAppSec](https://www.rapid7.com/products/insightappsec/) is Rapid7’s industry leading Dynamic Application Security Testing (DAST) that helps you understand and minimize risk in your web applications and APIs. 
+
+# Usage
+The action will start a scan on Rapid7 InsightAppSec and depending on configuration either:
 - wait for its completion and return a result summary to the logs. These results can be filtered using the `vuln-query` (scan gating) option in the config.
 - immediately return the InsightAppSec scan ID to the logs and the action finishes.
 
-This can be configured using the `wait-for-scan-complete` option in the config.
+This behavior can be configured using the `wait-for-scan-complete` option in the config.
 
 The InsightAppSec API key will need to be added as a GitHub secret in order for the action to work. See how to do this here: https://docs.github.com/en/actions/security-guides/encrypted-secrets
 
-## Usage
 
 ```yaml
 - uses: rapid7/insightappsec-scan-github-actions@v1.1.0
@@ -90,7 +95,7 @@ The unit tests use the jest framework. This can be installed using node package 
 ### Execution
 
 To execute all tests
-1. From the insightappsec-scan-github-actions directory run _npm t_
+- From the insightappsec-scan-github-actions directory run _npm t_
 
 For a code coverage report
-1. From the insightappsec-scan-github-actions directory run _npm run coverage_
+- From the insightappsec-scan-github-actions directory run _npm run coverage_
