@@ -1,6 +1,6 @@
 ![InsightAppSec](https://brand.rapid7.com/includes/file/png/insightappsec-b-c.png)
 # InsightAppSec Scan Action
-The InsightAppSec Scan GitHub Action allows security and development teams to integrate dynamic application security testing (DAST) into the CI/CD pipeline.
+The [InsightAppSec Scan](https://docs.rapid7.com/insightappsec/github-actions-integration) GitHub Action allows security and development teams to integrate dynamic application security testing (DAST) into the CI/CD pipeline.
 
 # About InsightAppSec
 [InsightAppSec](https://www.rapid7.com/products/insightappsec/) is Rapid7’s industry leading Dynamic Application Security Testing (DAST) that helps you understand and minimize risk in your web applications and APIs. 
