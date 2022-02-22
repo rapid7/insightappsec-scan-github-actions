@@ -7,7 +7,7 @@
 const axios = __nccwpck_require__(992);
 
 const APPLICATION_JSON = "application/json";
-const USER_AGENT_HEADER = "r7:insightappsec-github-actions/1.2.0";
+const USER_AGENT_HEADER = "r7:insightappsec-github-actions/1.3.0";
 
 class InsightAppSecClient {
 
