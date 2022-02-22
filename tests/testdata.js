@@ -123,7 +123,11 @@ module.exports = {
     scanVulnsPg1: {"status": 200, "data": {
         "data": [
             {
-                "severity": "MEDIUM"
+                "severity": "MEDIUM",
+                "insight_ui_url": "www.example.com/123#123",
+                "app": {
+                    "id": "myvalue"
+                }
             },
             {
                 "severity": "MEDIUM"

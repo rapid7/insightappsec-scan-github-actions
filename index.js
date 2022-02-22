@@ -1,12 +1,13 @@
+const axios = require('axios').default;
 const core = require("@actions/core");
 const InsightAppSecClient = require("./api/InsightAppSecClient");
 const ScanTools = require("./lib/ScanTools");
 
-const INPUT_REGION = "region";
-const INPUT_API_KEY = "api-key";
-const INPUT_SCAN_CONFIG_ID = "scan-config-id";
-const INPUT_VULN_QUERY = "vuln-query";
-const INPUT_WAIT_SCAN_COMPLETE = "wait-for-scan-complete";
+const INPUT_REGION = "us";
+const INPUT_API_KEY = "4023166f-a48f-4453-bed4-8baba5772179";
+const INPUT_SCAN_CONFIG_ID = "89170081-7db0-4eaf-acce-563c9adfe3c2";
+const INPUT_VULN_QUERY = "vulnerability.vulnerabilityScore > 4";
+const INPUT_WAIT_SCAN_COMPLETE = "true";
 const INPUT_SCAN_TIMEOUT_MINS = "scan-timeout-mins";
 const OUTPUT_SCAN_FINDINGS = "scan-findings";
 
@@ -20,10 +21,10 @@ function isInputValid(key, value) {
 }
 
 async function performAction() {
-    const region = core.getInput(INPUT_REGION);
-    const apiKey = core.getInput(INPUT_API_KEY);
-    const scanConfigId = core.getInput(INPUT_SCAN_CONFIG_ID);
-    const vulnQuery = core.getInput(INPUT_VULN_QUERY) || null;
+    const region = "us";// core.getInput(INPUT_REGION);
+    const apiKey = "4023166f-a48f-4453-bed4-8baba5772179"; //core.getInput(INPUT_API_KEY);
+    const scanConfigId = "89170081-7db0-4eaf-acce-563c9adfe3c2"; // core.getInput(INPUT_SCAN_CONFIG_ID);
+    const vulnQuery = null; //"vulnerability.vulnerabilityScore > 4"; //core.getInput(INPUT_VULN_QUERY) || null;
     const waitScanComplete = core.getBooleanInput(INPUT_WAIT_SCAN_COMPLETE);
     let scanTimeoutMins = core.getInput(INPUT_SCAN_TIMEOUT_MINS) || null;
 
@@ -65,8 +66,8 @@ async function performAction() {
             const success = await scanTools.pollForScanComplete(scanId, startTimeMillis, scanTimeoutMins);
 
             if(success) {
-                const result = await scanTools.getScanResultsSummary(scanId, vulnQuery);
-                core.setOutput(OUTPUT_SCAN_FINDINGS, JSON.stringify({vulnerabilities: result}, null, 2));
+                const result = await scanTools.getScanResultsSummary(scanId, vulnQuery, scanConfigId);
+                core.setOutput(OUTPUT_SCAN_FINDINGS, JSON.stringify({vulnerabilities: result[0], link: result[1]}, null, 2));
                 if (Object.keys(result).length != 0 && vulnQuery) {
                     core.setFailed("Vulnerabilities were found in scan. Failing.");
                 }
