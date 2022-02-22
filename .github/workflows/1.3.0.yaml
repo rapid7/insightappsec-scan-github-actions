@@ -1,0 +1,25 @@
+name: IAS Scan test
+on:
+  push:
+    branches: [ master ]
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - id: my-scan
+        uses: sstephenson-r7/insightappsec-scan-github-actions@v1.3.0
+        with:
+          region: us
+          api-key: ${{ secrets.IAS_API_KEY }}
+          scan-config-id: '187a1863-8f1a-4a85-92a6-14d41613deb3'
+          scan-timeout-mins: 1
+          vuln-query: "vulnerability.severity = 'HIGH'"
+      - name: Upload findings
+        if: always()
+        run: echo "${{ steps.my-scan.outputs.scan-findings }}"
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [scan]
+    steps:
+      - name: Deploy artifact
+        run: echo "Deploying..."
