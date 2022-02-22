@@ -12,7 +12,6 @@ jobs:
           region: us
           api-key: ${{ secrets.IAS_API_KEY }}
           scan-config-id: '187a1863-8f1a-4a85-92a6-14d41613deb3'
-          scan-timeout-mins: 10
           vuln-query: "vulnerability.severity = 'HIGH'"
       - name: Upload findings
         if: always()
