@@ -171,13 +171,13 @@ module.exports = class ScanTools{
     async getScanResultsSummary(scanId, vulnQuery, scanConfigId) {
         let next = {};
         let resultSummary = {};
-        let ui_url = "";
+        let uiUrl = "";
 
         do {
             let results = await this.client.getScanVulnerabilities(scanId, vulnQuery, next.href); // eslint-disable-line
 
-            if(ui_url == ""){
-                ui_url = setUiUrl(results, scanId, scanConfigId);
+            if(!uiUrl){
+                uiUrl = setUiUrl(results, scanId, scanConfigId);
             }
 
             if(results.status < 200 || results.status > 299) {
@@ -189,7 +189,7 @@ module.exports = class ScanTools{
             next = getNext(results.data.links);
         } while(next);
 
-        return [resultSummary, ui_url];
+        return [resultSummary, uiUrl];
     }
 
     compileResults(total = {}, currentPage) {
@@ -4960,16 +4960,15 @@ module.exports = require("zlib");
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-const axios = __nccwpck_require__(992).default;
 const core = __nccwpck_require__(6024);
 const InsightAppSecClient = __nccwpck_require__(1747);
 const ScanTools = __nccwpck_require__(1189);
 
-const INPUT_REGION = "us";
-const INPUT_API_KEY = "4023166f-a48f-4453-bed4-8baba5772179";
-const INPUT_SCAN_CONFIG_ID = "89170081-7db0-4eaf-acce-563c9adfe3c2";
-const INPUT_VULN_QUERY = "vulnerability.vulnerabilityScore > 4";
-const INPUT_WAIT_SCAN_COMPLETE = "true";
+const INPUT_REGION = "region";
+const INPUT_API_KEY = "api-key";
+const INPUT_SCAN_CONFIG_ID = "scan-config-id";
+const INPUT_VULN_QUERY = "vuln-query";
+const INPUT_WAIT_SCAN_COMPLETE = "wait-for-scan-complete";
 const INPUT_SCAN_TIMEOUT_MINS = "scan-timeout-mins";
 const OUTPUT_SCAN_FINDINGS = "scan-findings";
 
@@ -4983,10 +4982,10 @@ function isInputValid(key, value) {
 }
 
 async function performAction() {
-    const region = "us";// core.getInput(INPUT_REGION);
-    const apiKey = "4023166f-a48f-4453-bed4-8baba5772179"; //core.getInput(INPUT_API_KEY);
-    const scanConfigId = "89170081-7db0-4eaf-acce-563c9adfe3c2"; // core.getInput(INPUT_SCAN_CONFIG_ID);
-    const vulnQuery = null; //"vulnerability.vulnerabilityScore > 4"; //core.getInput(INPUT_VULN_QUERY) || null;
+    const region = core.getInput(INPUT_REGION);
+    const apiKey = core.getInput(INPUT_API_KEY);
+    const scanConfigId = core.getInput(INPUT_SCAN_CONFIG_ID);
+    const vulnQuery = core.getInput(INPUT_VULN_QUERY) || null;
     const waitScanComplete = core.getBooleanInput(INPUT_WAIT_SCAN_COMPLETE);
     let scanTimeoutMins = core.getInput(INPUT_SCAN_TIMEOUT_MINS) || null;
 
@@ -5029,7 +5028,7 @@ async function performAction() {
 
             if(success) {
                 const result = await scanTools.getScanResultsSummary(scanId, vulnQuery, scanConfigId);
-                core.setOutput(OUTPUT_SCAN_FINDINGS, JSON.stringify({vulnerabilities: result[0], link: result[1]}, null, 2));
+                core.setOutput(OUTPUT_SCAN_FINDINGS, JSON.stringify({vulnerabilities: result[0], scanLink: result[1]}, null, 2));
                 if (Object.keys(result).length != 0 && vulnQuery) {
                     core.setFailed("Vulnerabilities were found in scan. Failing.");
                 }
