@@ -82,6 +82,7 @@ function getNext(links) {
 }
 
 function setUiUrl(results, scanId, scanConfigId) {
+
     let orgToken = results.data.data[0].insight_ui_url;
     orgToken = orgToken.split("#");
     orgToken = orgToken[0];
@@ -176,7 +177,7 @@ module.exports = class ScanTools{
         do {
             let results = await this.client.getScanVulnerabilities(scanId, vulnQuery, next.href); // eslint-disable-line
 
-            if(!uiUrl){
+            if(!uiUrl && Object.keys(results).length !== 0){
                 uiUrl = setUiUrl(results, scanId, scanConfigId);
             }
 
