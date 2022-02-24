@@ -11,7 +11,7 @@ jobs:
         with:
           region: us
           api-key: ${{ secrets.IAS_API_KEY }}
-          scan-config-id: '89170081-7db0-4eaf-acce-563c9adfe3c2'
+          scan-config-id: '77a063fa-7aaa-489d-8f44-8ae2ce4bc387'
           vuln-query: null
       - name: Upload findings
         if: always()
