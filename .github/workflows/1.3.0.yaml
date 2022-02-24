@@ -12,7 +12,7 @@ jobs:
           region: us
           api-key: ${{ secrets.IAS_API_KEY }}
           scan-config-id: '89170081-7db0-4eaf-acce-563c9adfe3c2'
-          vuln-query: "vulnerability.severity = 'HIGH'"
+          vuln-query: null
       - name: Upload findings
         if: always()
         run: echo "${{ steps.my-scan.outputs.scan-findings }}"
