@@ -19,13 +19,10 @@ pipeline {
         stage('Unit tests') {
             steps {
 
-                withNPM(npmrcConfig:'my-custom-npmrc') {
-                 echo "Performing npm build..."
                     sh """
-                    npm install
+                    npm install -g npm
                     npm t
                     """
-                }
             }
         }
 
