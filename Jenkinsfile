@@ -19,7 +19,7 @@ pipeline {
         stage('Unit tests') {
             steps {
                 sh """
-                    usr/local/npm install
+                    sudo apt npm install
                     npm t
                 """
             }
