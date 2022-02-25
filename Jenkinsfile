@@ -14,10 +14,6 @@ pipeline {
         string(name: 'VERSION_NUMBER', description: 'InsightAppSec Gitlab Scan version number')
     }
 
-    environment {
-
-    }
-
     stages {
 
         stage('Unit tests') {
