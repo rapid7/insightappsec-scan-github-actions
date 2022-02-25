@@ -1,7 +1,6 @@
 name: "Rapid7 InsightAppSec Scan"
 description: >
-  The Rapid7 InsightAppSec Scan action allows application and security teams to embed Dynamic Application Security 
-  Testing (DAST) into their build and release pipelines.
+  The Rapid7 InsightAppSec Scan action allows application and security teams to embed DAST into build and release pipelines.
 inputs:
   region:
     description: "The region indicates the geo-location of the Insight Platform"
