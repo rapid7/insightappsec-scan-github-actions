@@ -16,7 +16,7 @@ The InsightAppSec API key will need to be added as a GitHub secret in order for 
 
 
 ```yaml
-- uses: rapid7/insightappsec-scan-github-actions@v1.1.0
+- uses: rapid7/insightappsec-scan-github-actions@v1.2.0
   with:
     # The region indicates the geo-location of the Insight Platform. For example 'us'.
     region: "us"
@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: my-scan
-        uses: rapid7/insightappsec-scan-github-actions@v1.1.0
+        uses: rapid7/insightappsec-scan-github-actions@v1.2.0
         with:
           region: "us"
           api-key: ${{ secrets.IAS_API_KEY }}
