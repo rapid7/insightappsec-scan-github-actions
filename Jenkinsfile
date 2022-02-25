@@ -14,14 +14,22 @@ pipeline {
         string(name: 'VERSION_NUMBER', description: 'InsightAppSec Gitlab Scan version number')
     }
 
+    environment {
+
+    }
+
     stages {
 
         stage('Unit tests') {
             steps {
-                sh """
-                    sudo apt npm install
+
+                withNPM(npmrcConfig:'my-custom-npmrc') {
+                 echo "Performing npm build..."
+                    sh """
+                    npm install
                     npm t
-                """
+                    """
+                }
             }
         }
 
