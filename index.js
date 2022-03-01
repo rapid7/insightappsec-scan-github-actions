@@ -20,12 +20,12 @@ function isInputValid(key, value) {
 }
 
 async function performAction() {
-    const region = 'US'; //core.getInput(INPUT_REGION);
-    const apiKey = '468b7fe4-213b-4b47-93e2-db96db45a7a0'; //core.getInput(INPUT_API_KEY);
-    const scanConfigId = "89170081-7db0-4eaf-acce-563c9adfe3c2"; //core.getInput(INPUT_SCAN_CONFIG_ID);
-    const vulnQuery = null; //core.getInput(INPUT_VULN_QUERY) || null;
-    const waitScanComplete = true; //core.getBooleanInput(INPUT_WAIT_SCAN_COMPLETE);
-    let scanTimeoutMins = null; //core.getInput(INPUT_SCAN_TIMEOUT_MINS) || null;
+    const region = core.getInput(INPUT_REGION);
+    const apiKey = core.getInput(INPUT_API_KEY);
+    const scanConfigId = core.getInput(INPUT_SCAN_CONFIG_ID);
+    const vulnQuery = core.getInput(INPUT_VULN_QUERY) || null;
+    const waitScanComplete = core.getBooleanInput(INPUT_WAIT_SCAN_COMPLETE);
+    let scanTimeoutMins = core.getInput(INPUT_SCAN_TIMEOUT_MINS) || null;
 
     if(scanTimeoutMins) {
         try{
