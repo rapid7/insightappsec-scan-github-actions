@@ -20,6 +20,9 @@ pipeline {
             steps {
 
                     sh """
+                    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+                    nvm install 12.18.1
+                    nvm use 12.18.1
                     curl -qL https://www.npmjs.com/install.sh | sh
                     npm install
                     npm t
