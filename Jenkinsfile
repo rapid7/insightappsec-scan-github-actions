@@ -20,7 +20,7 @@ spec:
       path: '/var/run/docker.sock'
   containers:
   - name: node
-    image: node:latest
+    image: node:14.17.0-slim
     command:
     - cat
     tty: true
