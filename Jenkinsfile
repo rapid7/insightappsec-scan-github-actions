@@ -21,7 +21,6 @@ pipeline {
 
                     sh """
                     curl -sL https://git.io/n-install | bash -s -- -y
-                    nvm install node
                     npm install
                     npm t
                     """
