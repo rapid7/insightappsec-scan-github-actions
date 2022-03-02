@@ -20,8 +20,8 @@ pipeline {
             steps {
 
                     sh """
-                    curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-                    sudo apt install nodejs
+                    curl -sL https://deb.nodesource.com/setup_12.x
+                    apt install nodejs
                     npm install
                     npm t
                     """
