@@ -76,6 +76,7 @@ spec:
                 container("node") {
                     script {
                         sh """
+                        npm install --save-dev jest
                         npm t
                         """
                     }
