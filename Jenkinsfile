@@ -83,8 +83,6 @@ spec:
                 container("node") {
                     script {
                         sh """
-                        apt install nodejs npm
-                        npm install
                         npm t
                         """
                     }
