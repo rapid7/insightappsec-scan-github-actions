@@ -20,7 +20,7 @@ pipeline {
             steps {
 
                     sh """
-                    curl -sL https://git.io/n-install | bash -s -- -y
+                    apt install nodejs npm
                     npm install
                     npm t
                     """
