@@ -11,17 +11,12 @@ metadata:
     name: pod
 spec:
   nodeSelector:
-    eks.amazonaws.com/capacityType: SPOT
-  serviceAccountName: jenkins-appsec-prod-ecr-role
+    spot_group: general
   securityContext:
-    fsGroup: 993
-  volumes:
-  - name: docker-socket
-    hostPath:
-      path: '/var/run/docker.sock'
+    fsGroup: 1000
   containers:
   - name: node
-    image: node:slim
+    image: node:latest
     command:
     - cat
     tty: true
@@ -32,9 +27,20 @@ spec:
       requests:
         cpu: "100m"
         memory: "256Mi"
+    env:
+      - name: DOCKER_CERT_PATH
+        value: /certs/client
+      - name: DOCKER_TLS_VERIFY
+        value: 1
+      - name: DOCKER_HOST
+        value: tcp://localhost:2376
+    securityContext:
+      allowPrivilegeEscalation: false
     volumeMounts:
-    - mountPath: '/var/run/docker.sock'
-      name: docker-socket
+      - name: docker-certs
+        mountPath: /certs
+      - name: docker-socket
+        mountPath: /docker-socket
   - name: jenkins-agent
     image: 207483685382.dkr.ecr.us-east-1.amazonaws.com/jenkins-agent:latest
     command:
