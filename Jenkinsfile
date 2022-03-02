@@ -1,7 +1,7 @@
 pipeline {
 
     agent {
-        kubernetes(k8sAgent(name: 'base', idleMinutes: params.POD_IDLE_MINUTES))
+        kubernetes(k8sAgent(name: 'ubuntu_base_image', idleMinutes: params.POD_IDLE_MINUTES))
     }
 
     options {
@@ -20,7 +20,8 @@ pipeline {
             steps {
 
                     sh """
-                    npm install -g npm
+                    curl -qL https://www.npmjs.com/install.sh | sh
+                    npm install
                     npm t
                     """
             }
