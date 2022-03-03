@@ -104,17 +104,17 @@ spec:
 
         stage('Create tag') {
             steps {
-                container("node"){
                     script{
                         if(params.VERSION_NUMBER.isEmpty()){
                         error("Build failed. Version number not provided.")
                         }
-
-                        sh "git remote set-url origin https://github.com/rapid7/insightappsec-scan-github-actions"
-                        sh "git tag ${params.VERSION_NUMBER}"
-                        sh "git push origin ${params.VERSION_NUMBER}"
                     }
-                }
+
+                    sh """
+                    git remote set-url origin https://github.com/rapid7/insightappsec-scan-github-actions
+                    git tag ${params.VERSION_NUMBER}
+                    git push origin ${params.VERSION_NUMBER}
+                    """
             }
         }
     }
