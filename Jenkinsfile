@@ -91,7 +91,7 @@ spec:
                         sh """
                         if [ -d "node_modules" ]
                         then
-                            rm node_modules
+                            rm -r node_modules
                         fi
                         npm install --production
                         npm i -g @vercel/ncc@0.31.1
