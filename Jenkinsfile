@@ -1,7 +1,7 @@
 pipeline {
 
     agent {
-        ubernetes {
+        kubernetes {
 yaml """
 apiVersion: v1
 kind: Pod
