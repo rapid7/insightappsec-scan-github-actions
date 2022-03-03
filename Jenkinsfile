@@ -104,15 +104,32 @@ spec:
 
         stage('Create tag') {
             steps {
-
-                script {
-                    if(params.VERSION_NUMBER.isEmpty()){
+                container("node"){
+                    script{
+                        if(params.VERSION_NUMBER.isEmpty()){
                         error("Build failed. Version number not provided.")
+                        }
+
+                        repositoryCommiterEmail = 'sophie_stephenson@rapid7.com'
+                        repositoryCommiterUsername = 'sstephenson-r7'
+
+                        checkout scm
+
+                        sh("git config user.email ${repositoryCommiterEmail}")
+                        sh("git config user.name '${repositoryCommiterUsername}'")
+
+                        sh "git remote set-url origin https://github.com/rapid7/insightappsec-scan-github-actions"
+
+                        // deletes current snapshot tag
+                        sh "git tag -d ${params.VERSION_NUMBER} || true"
+                        // tags current changeset
+                        sh "git tag -a ${params.VERSION_NUMBER}  -m \"passed CI\""
+                        // deletes tag on remote in order not to fail pushing the new one
+                        sh "git push origin :refs/tags/${params.VERSION_NUMBER} "
+                        // pushes the tags
+                        sh "git push --tags"
                     }
                 }
-                sh """
-                    git push origin ${params.VERSION_NUMBER}
-                """
             }
         }
     }
