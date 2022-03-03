@@ -67,6 +67,8 @@ spec:
     parameters {
         string(name: 'POD_IDLE_MINUTES', defaultValue: '0', description: 'Number of minutes pod will stay idle post build')
         string(name: 'VERSION_NUMBER', description: 'InsightAppSec Gitlab Scan version number')
+        string(name: 'GIT_USER_EMAIL', description: 'User email address associated with Git repository')
+        string(name: 'GIT_USERNAME', description: 'Username associated with Git repository')
     }
 
     stages {
@@ -104,6 +106,7 @@ spec:
 
         stage('Create tag') {
             steps {
+                    
                     script{
                         if(params.VERSION_NUMBER.isEmpty()){
                         error("Build failed. Version number not provided.")
@@ -111,6 +114,8 @@ spec:
                     }
 
                     sh """
+                    git config user.email ${GIT_USER_EMAIL}
+                    git config user.name ${GIT_USERNAME}
                     git remote set-url origin https://github.com/rapid7/insightappsec-scan-github-actions
                     git tag ${params.VERSION_NUMBER}
                     git push origin ${params.VERSION_NUMBER}
