@@ -106,12 +106,11 @@ spec:
             steps {
 
                 script {
-                    if(params.VERSION_NUMBER == null){
+                    if(params.VERSION_NUMBER.isEmpty()){
                         error("Build failed. Version number not provided.")
                     }
                 }
                 sh """
-                    git push --set-upstream origin ${env.BRANCH_NAME}
                     git push origin ${params.VERSION_NUMBER}
                 """
             }
