@@ -111,6 +111,7 @@ spec:
                     }
                 }
                 sh """
+                    git push --set-upstream origin env.BRANCH_NAME
                     git push origin ${params.VERSION_NUMBER}
                 """
             }
