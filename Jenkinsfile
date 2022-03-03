@@ -73,18 +73,22 @@ spec:
 
         stage('Unit tests') {
             steps {
-
-                    sh """
-                    apt install nodejs npm
-                    npm install
-                    npm t
-                    """
+                container("node"){
+                    script {
+                        sh """
+                        npm install --save-dev jest
+                        npm t
+                        """
+                    }
+                }
             }
         }
 
         stage('Prepare build') {
             steps {
-                    sh """
+                container("node"){
+                    script {
+                        sh """
                         if [ -d "node_modules" ]
                         then
                             rm node_modules
@@ -93,6 +97,8 @@ spec:
                         npm i -g @vercel/ncc@0.31.1
                         npm run build
                         """
+                    }
+                }
             }
         }
 
@@ -104,8 +110,6 @@ spec:
                         error("Build failed. Version number not provided.")
                     }
                 }
-
-
                 sh """
                     git push origin ${params.VERSION_NUMBER}
                 """
