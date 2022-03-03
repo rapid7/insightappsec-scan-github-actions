@@ -1,7 +1,62 @@
 pipeline {
 
     agent {
-        kubernetes(k8sAgent(name: 'ubuntu_base_image', idleMinutes: params.POD_IDLE_MINUTES))
+        ubernetes {
+yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod
+  labels:
+    name: pod
+spec:
+  nodeSelector:
+    eks.amazonaws.com/capacityType: SPOT
+  securityContext:
+    fsGroup: 993
+  volumes:
+  - name: docker-socket
+    hostPath:
+      path: '/var/run/docker.sock'
+  containers:
+  - name: node
+    image: node:14.17.0-slim
+    command:
+    - cat
+    tty: true
+    resources:
+      limits:
+        cpu: "200m"
+        memory: "512Mi"
+      requests:
+        cpu: "100m"
+        memory: "256Mi"
+    volumeMounts:
+    - mountPath: '/var/run/docker.sock'
+      name: docker-socket
+  - name: jenkins-agent
+    image: 207483685382.dkr.ecr.us-east-1.amazonaws.com/jenkins-agent:latest
+    command:
+    - cat
+    tty: true
+    resources:
+      limits:
+        cpu: "200m"
+        memory: "512Mi"
+      requests:
+        cpu: "100m"
+        memory: "256Mi"
+    volumeMounts:
+    - mountPath: '/var/run/docker.sock'
+      name: docker-socket
+    securityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      allowPrivilegeEscalation: false
+"""
+    // idleMinutes 60 // Stay idle after build
+    defaultContainer 'jenkins-agent'
+        }
     }
 
     options {
