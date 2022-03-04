@@ -67,8 +67,6 @@ spec:
     parameters {
         string(name: 'POD_IDLE_MINUTES', defaultValue: '0', description: 'Number of minutes pod will stay idle post build')
         string(name: 'VERSION_NUMBER', description: 'InsightAppSec Gitlab Scan version number')
-        string(name: 'GIT_USERNAME', description: 'Username associated with Git repository')
-        string(name: 'GIT_PASSWORD', description: 'Password associated with Git repository')
     }
 
     stages {
@@ -113,14 +111,14 @@ spec:
                         }
                     }
 
-                    container("node"){ 
-                        withCredentials([usernamePassword(credentialsId: "github-app-key", usernameVariable: "${GIT_USERNAME}", passwordVariable: "${GIT_PASSWORD}")]) {
-                            sh label: "git config user.email",
-                            script: "git config --global user.email github_serviceaccounts+${GIT_USERNAME}@rapid7.com"
-                            sh label: "git config user.name",
-                            script: "git config --global user.name ${GIT_USERNAME}"
-                        } 
-                    }
+                    container('node') {
+                                    withCredentials([usernamePassword(credentialsId: 'github-app-key', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                                            sh label: 'git config user.email',
+                                            script: 'git config --global user.email github_serviceaccounts+$USERNAME@rapid7.com'
+                                            sh label: 'git config user.name',
+                                            script: 'git config --global user.name $USERNAME'
+                                }
+                            }
                     
                     sh """
                     git remote set-url origin https://github.com/rapid7/insightappsec-scan-github-actions
