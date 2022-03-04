@@ -113,16 +113,15 @@ spec:
                         }
                     }
 
-                    
-                    container('targted_container_name') {
-                            withCredentials([usernamePassword(credentialsId: "github-app-key", usernameVariable: "${GIT_USERNAME}", passwordVariable: "${GIT_PASSWORD}")]) {
-                                    sh label: "git config user.email",
-                                    script: "git config --global user.email github_serviceaccounts+${GIT_USERNAME}@rapid7.com"
-                                    sh label: "git config user.name",
-                                    script: "git config --global user.name ${GIT_USERNAME}"
-                        }
+                    container("node"){ 
+                        withCredentials([usernamePassword(credentialsId: "github-app-key", usernameVariable: "${GIT_USERNAME}", passwordVariable: "${GIT_PASSWORD}")]) {
+                            sh label: "git config user.email",
+                            script: "git config --global user.email github_serviceaccounts+${GIT_USERNAME}@rapid7.com"
+                            sh label: "git config user.name",
+                            script: "git config --global user.name ${GIT_USERNAME}"
+                        } 
                     }
-                       
+                    
                     sh """
                     git remote set-url origin https://github.com/rapid7/insightappsec-scan-github-actions
                     git tag ${params.VERSION_NUMBER}
