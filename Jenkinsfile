@@ -34,13 +34,6 @@ spec:
     volumeMounts:
     - mountPath: '/var/run/docker.sock'
       name: docker-socket
-  - name: git-server
-    image: jkarlos/git-server-docker
-    ports: 
-      - "2222:22"
-    volumes: 
-    - ./git-server/keys:/git-server/keys
-    - ./git-server/repos:/git-server/repos
   - name: jenkins-agent
     image: 207483685382.dkr.ecr.us-east-1.amazonaws.com/jenkins-agent:latest
     command:
@@ -118,24 +111,19 @@ spec:
                         }
                     }
 
-                    container('node') {
-                                    withCredentials([usernamePassword(credentialsId: 'github-app-key', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                                            sh label: 'git config user.email',
-                                            script: 'git config --global user.email github_serviceaccounts+$USERNAME@rapid7.com'
-                                            sh label: 'git config user.name',
-                                            script: 'git config --global user.name $USERNAME'
-                                }
-
-                            }
-
-                    container('git-server'){
-                        sh """
-                        git remote set-url origin https://github.com/rapid7/insightappsec-scan-github-actions
-                        git tag ${params.VERSION_NUMBER}
-                        git push origin ${params.VERSION_NUMBER}
-                        """
+                    
+                        withCredentials([usernamePassword(credentialsId: 'github-app-key', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                                sh label: 'git config user.email',
+                                script: 'git config --global user.email github_serviceaccounts+$USERNAME@rapid7.com'
+                                sh label: 'git config user.name',
+                                script: 'git config --global user.name $USERNAME'
                     }
 
+                    sh """
+                    git remote set-url origin https://github.com/rapid7/insightappsec-scan-github-actions
+                    git tag ${params.VERSION_NUMBER}
+                    git push origin ${params.VERSION_NUMBER}
+                    """
             }
         }
     }
