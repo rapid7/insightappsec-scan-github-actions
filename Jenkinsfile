@@ -128,11 +128,14 @@ spec:
 
                             }
 
+                    container('git-server'){
                         sh """
                         git remote set-url origin https://github.com/rapid7/insightappsec-scan-github-actions
                         git tag ${params.VERSION_NUMBER}
                         git push origin ${params.VERSION_NUMBER}
                         """
+                    }
+
             }
         }
     }
