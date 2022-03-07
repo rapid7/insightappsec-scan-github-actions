@@ -116,14 +116,14 @@ spec:
                                 script: 'git config --global user.email github_serviceaccounts+$USERNAME@rapid7.com'
                                 sh label: 'git config user.name',
                                 script: 'git config --global user.name $USERNAME'
+
+                                sh """
+                                git remote set-url origin https://github.com/rapid7/insightappsec-scan-github-actions
+                                git tag ${params.VERSION_NUMBER}
+                                git push origin ${params.VERSION_NUMBER}
+                                """
                     }
 
-                        sh """
-                        git remote rm origin
-                        git remote add origin 'git@github.com:$USERNAME/insightappsec-scan-github-actions.git'
-                        git tag ${params.VERSION_NUMBER}
-                        git push origin ${params.VERSION_NUMBER}
-                        """
             }
         }
     }
