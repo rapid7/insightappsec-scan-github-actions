@@ -34,6 +34,13 @@ spec:
     volumeMounts:
     - mountPath: '/var/run/docker.sock'
       name: docker-socket
+  - name: git-server
+    image: jkarlos/git-server-docker
+    ports: 
+      - "2222:22"
+    volumes: 
+    - ./git-server/keys:/git-server/keys
+    - ./git-server/repos:/git-server/repos
   - name: jenkins-agent
     image: 207483685382.dkr.ecr.us-east-1.amazonaws.com/jenkins-agent:latest
     command:
@@ -119,12 +126,13 @@ spec:
                                             script: 'git config --global user.name $USERNAME'
                                 }
 
-                                    sh """
-                                    git remote set-url origin https://github.com/rapid7/insightappsec-scan-github-actions
-                                    git tag ${params.VERSION_NUMBER}
-                                    git push origin ${params.VERSION_NUMBER}
-                                    """
                             }
+
+                        sh """
+                        git remote set-url origin https://github.com/rapid7/insightappsec-scan-github-actions
+                        git tag ${params.VERSION_NUMBER}
+                        git push origin ${params.VERSION_NUMBER}
+                        """
             }
         }
     }
