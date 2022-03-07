@@ -119,7 +119,7 @@ spec:
 
                                 sh """
                                 git tag ${params.VERSION_NUMBER}
-                                git push https://${USERNAME}:${PASSWORD}@insightappsec-scan-github-actions ${params.VERSION_NUMBER}
+                                git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions ${params.VERSION_NUMBER}
                                 """
                     }
 
