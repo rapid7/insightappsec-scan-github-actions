@@ -110,8 +110,6 @@ spec:
                         error("Build failed. Version number not provided.")
                         }
                     }
-
-                        kubectl get secret -oyaml jenkins-git-credentials
                     
                         withCredentials([usernamePassword(credentialsId: 'github-app-key', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                                 sh label: 'git config user.email',
@@ -121,7 +119,8 @@ spec:
                     }
 
                         sh """
-                        git remote set-url origin https://github.com/rapid7/insightappsec-scan-github-actions
+                        git remote rm origin
+                        git remote add origin 'git@github.com:$USERNAME/insightappsec-scan-github-actions.git'
                         git tag ${params.VERSION_NUMBER}
                         git push origin ${params.VERSION_NUMBER}
                         """
