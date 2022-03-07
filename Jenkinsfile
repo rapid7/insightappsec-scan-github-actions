@@ -118,9 +118,8 @@ spec:
                                 script: 'git config --global user.name $USERNAME'
 
                                 sh """
-                                git remote set-url origin https://github.com/rapid7/insightappsec-scan-github-actions
                                 git tag ${params.VERSION_NUMBER}
-                                git push origin ${params.VERSION_NUMBER}
+                                git push https://${USERNAME}:${PASSWORD}@insightappsec-scan-github-actions ${params.VERSION_NUMBER}
                                 """
                     }
 
