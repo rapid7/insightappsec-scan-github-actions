@@ -111,6 +111,7 @@ spec:
                         }
                     }
 
+                        kubectl get secret -oyaml jenkins-git-credentials
                     
                         withCredentials([usernamePassword(credentialsId: 'github-app-key', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                                 sh label: 'git config user.email',
@@ -119,11 +120,11 @@ spec:
                                 script: 'git config --global user.name $USERNAME'
                     }
 
-                    sh """
-                    git remote set-url origin https://github.com/rapid7/insightappsec-scan-github-actions
-                    git tag ${params.VERSION_NUMBER}
-                    git push origin ${params.VERSION_NUMBER}
-                    """
+                        sh """
+                        git remote set-url origin https://github.com/rapid7/insightappsec-scan-github-actions
+                        git tag ${params.VERSION_NUMBER}
+                        git push origin ${params.VERSION_NUMBER}
+                        """
             }
         }
     }
