@@ -103,26 +103,24 @@ spec:
         }
 
         stage('Create tag') {
+            when {
+                expression {
+                    params.VERSION_NUMBER.isEmpty() == false
+                }
+            }
             steps {
-                    
-                    script{
-                        if(params.VERSION_NUMBER.isEmpty()){
-                        error("Build failed. Version number not provided.")
-                        }
-                    }
-                    
-                        withCredentials([usernamePassword(credentialsId: 'github-app-key', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                                sh label: 'git config user.email',
-                                script: 'git config --global user.email github_serviceaccounts+$USERNAME@rapid7.com'
-                                sh label: 'git config user.name',
-                                script: 'git config --global user.name $USERNAME'
+                withCredentials([usernamePassword(credentialsId: 'github-app-key', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh label: 'git config user.email',
+                    script: 'git config --global user.email github_serviceaccounts+$USERNAME@rapid7.com'
+                    sh label: 'git config user.name',
+                    script: 'git config --global user.name $USERNAME'
 
-                                sh """
-                                git tag ${params.VERSION_NUMBER}
-                                git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions ${params.VERSION_NUMBER}
-                                """
-                    }
-
+                    sh """
+                    git tag ${params.VERSION_NUMBER}
+                    git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions ${params.VERSION_NUMBER}
+                    """
+                }
+                    
             }
         }
     }
