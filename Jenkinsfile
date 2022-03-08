@@ -126,9 +126,14 @@ spec:
 
                     //update dist/index.js file
                     sh """
-                    git add dist/index.js
-                    git commit -m "Updating index.js file"
-                    git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions
+                    if [ -f "dist/index.js" ]
+                    then
+                        git add dist/index.js
+                        git commit -m "Updating index.js file"
+                        git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions
+                    else
+                        echo "File not accessed"
+                    fi
                     """
 
                     //create release
