@@ -127,6 +127,7 @@ spec:
                     //update dist/index.js file
                     sh """
                     if [ -f "dist/index.js" ]; then
+                        git add dist/index.js
                         git diff --quiet && git diff --staged --quiet || git commit -am "Updating index.js file"
                         git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions
                     else
