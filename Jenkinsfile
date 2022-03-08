@@ -71,6 +71,7 @@ spec:
 
     stages {
 
+        //run unit tests
         stage('Unit tests') {
             steps {
                 container("node"){
@@ -84,6 +85,7 @@ spec:
             }
         }
 
+        //create updated dist/index.js file
         stage('Prepare build') {
             steps {
                 container("node"){
@@ -105,6 +107,7 @@ spec:
         stage('Create tag') {
             when {
                 expression {
+                    //prevent 'create tag' stage from running if version number not provided
                     params.VERSION_NUMBER.isEmpty() == false
                 }
             }
@@ -115,9 +118,22 @@ spec:
                     sh label: 'git config user.name',
                     script: 'git config --global user.name $USERNAME'
 
+                    //push new tag to repo
                     sh """
                     git tag ${params.VERSION_NUMBER}
                     git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions ${params.VERSION_NUMBER}
+                    """
+
+                    //update dist/index.js file
+                    sh """
+                    git add dist/index.js
+                    git commit -m "Updating index.js file"
+                    git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions
+                    """
+
+                    //create release
+                    sh """
+                    gh release create ${params.VERSION_NUMBER}
                     """
                 }
                     
