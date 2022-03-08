@@ -108,7 +108,7 @@ spec:
             when {
                 expression {
                     //prevent 'create tag' stage from running if version number not provided
-                    params.VERSION_NUMBER.isEmpty() == false
+                    !params.VERSION_NUMBER.isEmpty()
                 }
             }
             steps {
