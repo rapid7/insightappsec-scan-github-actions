@@ -4,7 +4,7 @@ pipeline {
         kubernetes(
             k8sAgent(
             name: 'nodeJs', 
-            nodeJS: "14.17.0",
+            nodeJS: "14.17.0-slim",
             idleMinutes: params.POD_IDLE_MINUTES
             )
         )
