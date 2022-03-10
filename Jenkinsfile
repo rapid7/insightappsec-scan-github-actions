@@ -60,6 +60,9 @@ pipeline {
                 }
             }
             steps {
+
+                unstash "indexFile"
+
                 withCredentials([usernamePassword(credentialsId: 'github-app-key', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                 sh label: 'git config user.email',
                 script: 'git config --global user.email github_serviceaccounts+$USERNAME@rapid7.com'
@@ -72,13 +75,11 @@ pipeline {
                 //git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions ${params.VERSION_NUMBER}
                 //"""
 
-                unstash "indexFile"
-
                 //update dist/index.js file
                 sh """
-                if [ git diff --name-only HEAD~1 HEAD | grep indexFile ]; then
+                if [ git diff --name-only HEAD~1 HEAD | grep dist/index.js ]; then
                     echo "File accessed!"
-                    git add indexFile
+                    git add dist/index.js
                     git commit -am "Updating index.js file"
                     git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions
                 else
