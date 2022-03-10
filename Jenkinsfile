@@ -72,9 +72,10 @@ pipeline {
                 //git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions ${params.VERSION_NUMBER}
                 //"""
 
+                unstash "indexFile"
+
                 //update dist/index.js file
                 sh """
-                unstash "indexFile"
                 if [ git diff --name-only HEAD~1 HEAD | grep dist/index.js ]; then
                     echo "File accessed!"
                     git add dist/index.js
