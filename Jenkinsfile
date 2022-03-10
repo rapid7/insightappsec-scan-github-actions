@@ -65,7 +65,7 @@ pipeline {
             }
             steps {
 
-                //unstash "indexFile"
+                unstash name: "indexFile"
 
                 sh """
                 if [ "dist/index.js" ]; then 
