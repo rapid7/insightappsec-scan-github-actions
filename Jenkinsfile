@@ -14,7 +14,7 @@ pipeline {
     parameters {
         string(name: 'POD_IDLE_MINUTES', defaultValue: '0', description: 'Number of minutes pod will stay idle post build')
         string(name: 'VERSION_NUMBER', description: 'InsightAppSec Gitlab Scan version number')
-        string(name: 'AUTO_RUN', defaultValue: false, description: 'Option to re-trigger pipeline on push to Github')
+        booleanParam(name: 'RUN_PIPELINE', defaultValue: false, description: 'Option to trigger pipeline')
     }
 
     stages {
@@ -23,7 +23,7 @@ pipeline {
         stage('Unit tests') {
              when {
                 expression {
-                    !params.AUTO_RUN.isEmpty()
+                    params.RUN_PIPELINE
                 }
             }
             steps {
@@ -42,7 +42,7 @@ pipeline {
         stage('Prepare build') {
             when {
                 expression {
-                    !params.AUTO_RUN.isEmpty()
+                    params.RUN_PIPELINE
                 }
             }
             steps {
@@ -70,7 +70,7 @@ pipeline {
         stage('Create tag') {
             when {
                 expression {
-                    !params.AUTO_RUN.isEmpty()
+                    params.RUN_PIPELINE
                     //prevent 'create tag' stage from running if version number not provided
                     !params.VERSION_NUMBER.isEmpty()
                 }
