@@ -21,13 +21,11 @@ pipeline {
         //run unit tests
         stage('Unit tests') {
             steps {
-                container("node"){
-                    script {
-                        sh """
-                        npm install --save-dev jest
-                        npm t
-                        """
-                    }
+                script {
+                    sh """
+                    npm install --save-dev jest
+                    npm t
+                    """
                 }
             }
         }
@@ -35,18 +33,16 @@ pipeline {
         //create updated dist/index.js file
         stage('Prepare build') {
             steps {
-                container("node"){
-                    script {
-                        sh """
-                        if [ -d "node_modules" ]
-                        then
-                            rm -r node_modules
-                        fi
-                        npm install --production
-                        npm i -g @vercel/ncc@0.31.1
-                        npm run build
-                        """
-                    }
+                script {
+                    sh """
+                    if [ -d "node_modules" ]
+                    then
+                        rm -r node_modules
+                    fi
+                    npm install --production
+                    npm i -g @vercel/ncc@0.31.1
+                    npm run build
+                    """
                 }
             }
         }
@@ -74,6 +70,7 @@ pipeline {
                     //update dist/index.js file
                     sh """
                     if [ -f "dist/index.js" ]; then
+                        echo "File accessed"
                         git add dist/index.js
                         git diff --quiet && git diff --staged --quiet || git commit -am "Updating index.js file"
                         git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions
