@@ -45,10 +45,8 @@ pipeline {
                         npm install --production
                         npm i -g @vercel/ncc@0.31.1
                         npm run build
-                        dir('/root'){
-                            stash includes: "dist/index.js", name: "indexFile"
-                        }
                         """
+                        stash includes: "dist/index.js", name: "indexFile"
                     }
                 }
             }
