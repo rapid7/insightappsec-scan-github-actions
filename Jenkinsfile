@@ -65,9 +65,7 @@ pipeline {
             }
             steps {
 
-                dir(env.WORKSPACE) {
-                    unstash "indexFile"
-                }
+                unstash "indexFile"
 
                 sh """
                 if [ "dist/index.js" ]; then 
