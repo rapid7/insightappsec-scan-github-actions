@@ -76,9 +76,9 @@ pipeline {
 
                 //update dist/index.js file
                 sh """
-                if [ git diff --name-only HEAD~1 HEAD | grep dist/index.js ]; then
+                if [ git diff --name-only HEAD~1 HEAD | grep indexFile ]; then
                     echo "File accessed!"
-                    git add dist/index.js
+                    git add indexFile
                     git commit -am "Updating index.js file"
                     git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions
                 else
