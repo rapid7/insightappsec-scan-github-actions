@@ -26,12 +26,12 @@
         {
             "version": "1.2.0",
             "date": "",
-            "changes": "Add scan timeout option"
+            "changes": "Add scan timeout option."
         },
         {
             "version": "1.1.0",
             "date": "",
-            "changes": "Add scan gating option"
+            "changes": "Add scan gating option."
         },
         {
             "version": "1.0.0",
@@ -70,7 +70,10 @@
             "dast"
         ]
     },
-    "documentation": {},
+    "documentation": {
+        "type": "url",
+        "source": "https://docs.rapid7.com/insightappsec/github-actions-integration"
+    },
     "media": [],
     "links": [
         {
