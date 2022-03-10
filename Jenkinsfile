@@ -42,6 +42,10 @@ pipeline {
                         then
                             rm -r node_modules
                         fi
+                        if[ -f "dist/index.js" ]
+                        then
+                            rm  dist/index.js
+                        fi
                         npm install --production
                         npm i -g @vercel/ncc@0.31.1
                         npm run build
@@ -61,13 +65,15 @@ pipeline {
             }
             steps {
 
-                unstash "indexFile"
+                dir(env.WORKSPACE) {
+                    unstash "indexFile"
+                }
 
                 sh """
                 if [ "dist/index.js" ]; then 
                     echo "Got the file."
                 else
-                    echo "No file.
+                    echo "No file."
                 fi                
                 """
 
