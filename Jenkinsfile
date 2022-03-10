@@ -50,11 +50,7 @@ pipeline {
                         npm install --production
                         npm i -g @vercel/ncc@0.31.1
                         npm run build
-                        """
-                        dir(${WORKSPACE}) {
-                            stash includes: "dist/index.js", name: "indexFile"
-                        }
-                        
+                        """                        
                     }
                 }
             }
@@ -68,9 +64,6 @@ pipeline {
                 }
             }
             steps {
-
-                sh 'chown -R root:jenkins target/'
-                unstash name: "indexFile"
 
                 sh """
                 if [ "dist/index.js" ]; then 
