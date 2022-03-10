@@ -84,10 +84,10 @@ pipeline {
                 script: 'git config --global user.name $USERNAME'
 
                 //push new tag to repo
-                //sh """
-                //git tag ${params.VERSION_NUMBER}
-                //git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions ${params.VERSION_NUMBER}
-                //"""
+                sh """
+                git tag ${params.VERSION_NUMBER}
+                git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions ${params.VERSION_NUMBER}
+                """
 
                 //update dist/index.js file
                 sh """
@@ -99,9 +99,9 @@ pipeline {
                 """
 
                 //create release
-                //sh """
-                //gh release create ${params.VERSION_NUMBER}
-                //"""
+                sh """
+                gh release create ${params.VERSION_NUMBER}
+                """
                 }  
             }
         }
