@@ -77,7 +77,7 @@ pipeline {
 
                 //update dist/index.js file
                 sh """
-                if [ git diff --name-only HEAD~1 HEAD | grep 'indexFile' ]; then
+                if [ git diff --name-only HEAD~1 HEAD | grep 'dist/index.js' ]; then
                     echo "File accessed!"
                     git add dist/index.js
                     git commit -am "Updating index.js file"
