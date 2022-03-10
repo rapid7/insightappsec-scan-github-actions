@@ -83,25 +83,22 @@ pipeline {
                 sh label: 'git config user.name',
                 script: 'git config --global user.name $USERNAME'
 
-                //push new tag to repo
-                sh """
-                git tag ${params.VERSION_NUMBER}
-                git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions ${params.VERSION_NUMBER}
-                """
-
                 //update dist/index.js file
                 sh """
                 if [ -f "dist/index.js" ]; then
                     git add dist/index.js
-                    git commit -m "Updating index.js file"
-                    git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions
-                fi
-                """
+                    if [ git diff-tree --name-only HEAD | grep dist/index.js]
+                    then 
+                        git commit -m "Updating index.js file"
+                        git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions
 
-                //create release
-                sh """
-                gh auth login
-                gh release create ${params.VERSION_NUMBER}
+                        git tag ${params.VERSION_NUMBER}
+                        git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions ${params.VERSION_NUMBER}
+
+                        gh auth login
+                        gh release create ${params.VERSION_NUMBER}
+                    fi
+                fi
                 """
                 }  
             }
