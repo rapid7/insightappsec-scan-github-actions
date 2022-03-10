@@ -69,7 +69,7 @@ pipeline {
             }
             steps {
 
-                dir(${WORKSPACE}) {
+                dir(WORKSPACE) {
                     unstash name: "indexFile"
                 }
 
