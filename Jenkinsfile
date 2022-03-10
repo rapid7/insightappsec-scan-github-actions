@@ -69,9 +69,8 @@ pipeline {
             }
             steps {
 
-                dir(WORKSPACE) {
-                    unstash name: "indexFile"
-                }
+                sh 'chown -R root:jenkins target/'
+                unstash name: "indexFile"
 
                 sh """
                 if [ "dist/index.js" ]; then 
