@@ -37,6 +37,7 @@ pipeline {
             steps {
                 container("node"){
                     script {
+
                         sh """
                         if [ -d "node_modules" ]
                         then
@@ -50,7 +51,10 @@ pipeline {
                         npm i -g @vercel/ncc@0.31.1
                         npm run build
                         """
-                        stash includes: "dist/index.js", name: "indexFile"
+                        dir(${WORKSPACE}) {
+                            stash includes: "dist/index.js", name: "indexFile"
+                        }
+                        
                     }
                 }
             }
@@ -65,7 +69,9 @@ pipeline {
             }
             steps {
 
-                unstash name: "indexFile"
+                dir(${WORKSPACE}) {
+                    unstash name: "indexFile"
+                }
 
                 sh """
                 if [ "dist/index.js" ]; then 
