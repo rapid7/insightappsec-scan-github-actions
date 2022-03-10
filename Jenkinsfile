@@ -63,6 +63,14 @@ pipeline {
 
                 unstash "indexFile"
 
+                sh """
+                if [ "dist/index.js" ]; then 
+                    echo "Got the file."
+                else
+                    echo "No file.
+                fi                
+                """
+
                 withCredentials([usernamePassword(credentialsId: 'github-app-key', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                 sh label: 'git config user.email',
                 script: 'git config --global user.email github_serviceaccounts+$USERNAME@rapid7.com'
