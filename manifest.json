@@ -1,0 +1,91 @@
+{
+    "manifestVersion": "1",
+    "extension": {
+        "type": "external_listing",
+        "url": "https://github.com/marketplace/actions/rapid7-insightappsec-scan"
+    },
+    "id": "insightappsec-github-scan-action",
+    "title": "Rapid7 InsightAppSec Scan GitHub action",
+    "overview": "Integrate InsightAppSec application security scans into your GitHub actions pipeline to automatically crawl and assess web applications to identify vulnerabilities.",
+    "description": "The InsightAppSec Scan GitHub Action allows security and development teams to integrate dynamic application security testing (DAST) into the CI/CD pipeline.  This GitHub Action allows you to easily kick-off an InsightAppSec scan and collect result feedback as part of your software workflows.",
+    "keyFeatures": [
+        "Leverage existing GitHub Action workflows",
+        "Trigger scans from GitHub",
+        "Pass or fail builds based on scan results"
+    ],
+    "requirements": [
+        "InsightAppSec API Key. Note that free trial users are unable to start a scan via the API and so may not use the plugin.",
+        "GitHub Account"
+    ],
+    "resources": {
+        "sourceUrl": "https://github.com/rapid7/insightappsec-scan-github-actions",
+        "licenseUrl": "https://github.com/rapid7/insightappsec-scan-github-actions/blob/master/LICENSE.txt"
+    },
+    "version": "1.2.0",
+    "versionHistory": [
+        {
+            "version": "1.2.0",
+            "date": "",
+            "changes": "Add scan timeout option"
+        },
+        {
+            "version": "1.1.0",
+            "date": "",
+            "changes": "Add scan gating option"
+        },
+        {
+            "version": "1.0.0",
+            "date": "",
+            "changes": "Initial release. Start an InsightAppSec scan from GitHub actions."
+        }
+    ],
+    "publisher": "rapid7",
+    "support": {
+        "type": "publisher",
+        "url": "http://www.rapid7.com"
+    },
+    "rapid7Products": [
+        {
+            "name": "insightappsec",
+            "role": "primary"
+        }
+    ],
+    "requiredRapid7Features": [],
+    "status": [],
+    "logos": {
+        "primary": "extension.png",
+        "secondary": []
+    },
+    "displayOptions": [],
+    "tags": {
+        "categories": [
+            "devops"
+        ],
+        "thirdPartyProducts": [],
+        "keywords": [
+            "github",
+            "github actions",
+            "ci",
+            "cd",
+            "dast"
+        ]
+    },
+    "documentation": {},
+    "media": [],
+    "links": [
+        {
+            "title": "GitHub actions documentation",
+            "source": "https://docs.github.com/en/actions"
+        },
+        {
+            "title": "InsightAppSec API Documentation",
+            "source": "https://help.rapid7.com/insightappsec/en-us/api/v1/docs.html"
+        },
+        {
+            "title": "Create a Rapid7 Platform API Key",
+            "source": "https://insightappsec.help.rapid7.com/docs/get-started-with-the-insightappsec-api"
+        }
+    ],
+    "metadata": [],
+    "processingInstructions": []
+}
