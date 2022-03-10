@@ -100,6 +100,7 @@ pipeline {
 
                 //create release
                 sh """
+                gh auth login
                 gh release create ${params.VERSION_NUMBER}
                 """
                 }  
