@@ -45,6 +45,7 @@ pipeline {
                         npm install --production
                         npm i -g @vercel/ncc@0.31.1
                         npm run build
+                        stash includes: "dist/index.js", name: "indexFile"
                         """
                     }
                 }
@@ -59,37 +60,36 @@ pipeline {
                 }
             }
             steps {
-                container("node") {
-                    withCredentials([usernamePassword(credentialsId: 'github-app-key', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    sh label: 'git config user.email',
-                    script: 'git config --global user.email github_serviceaccounts+$USERNAME@rapid7.com'
-                    sh label: 'git config user.name',
-                    script: 'git config --global user.name $USERNAME'
+                withCredentials([usernamePassword(credentialsId: 'github-app-key', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                sh label: 'git config user.email',
+                script: 'git config --global user.email github_serviceaccounts+$USERNAME@rapid7.com'
+                sh label: 'git config user.name',
+                script: 'git config --global user.name $USERNAME'
 
-                    //push new tag to repo
-                    //sh """
-                    //git tag ${params.VERSION_NUMBER}
-                    //git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions ${params.VERSION_NUMBER}
-                    //"""
+                //push new tag to repo
+                //sh """
+                //git tag ${params.VERSION_NUMBER}
+                //git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions ${params.VERSION_NUMBER}
+                //"""
 
-                    //update dist/index.js file
-                    sh """
-                    if [ -f "dist/index.js" ]; then
-                        git add dist/index.js
-                        git diff --quiet && git diff --staged --quiet || git commit -am "Updating index.js file"
-                        git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions
-                    else
-                        echo "File not accessed"
-                    fi
-                    """
+                //update dist/index.js file
+                sh """
+                unstash "indexFile"
+                if [ git diff --name-only HEAD~1 HEAD | grep dist/index.js ]; then
+                    echo "File accessed!"
+                    git add dist/index.js
+                    git commit -am "Updating index.js file"
+                    git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions
+                else
+                    echo "File not accessed"
+                fi
+                """
 
-                    //create release
-                    //sh """
-                    //gh release create ${params.VERSION_NUMBER}
-                    //"""
-                }
-                }
-                    
+                //create release
+                //sh """
+                //gh release create ${params.VERSION_NUMBER}
+                //"""
+                }  
             }
         }
     }
