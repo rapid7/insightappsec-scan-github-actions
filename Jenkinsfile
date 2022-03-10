@@ -14,12 +14,18 @@ pipeline {
     parameters {
         string(name: 'POD_IDLE_MINUTES', defaultValue: '0', description: 'Number of minutes pod will stay idle post build')
         string(name: 'VERSION_NUMBER', description: 'InsightAppSec Gitlab Scan version number')
+        string(name: 'AUTO_RUN', defaultValue: false, description: 'Option to re-trigger pipeline on push to Github')
     }
 
     stages {
 
         //run unit tests
         stage('Unit tests') {
+             when {
+                expression {
+                    !params.AUTO_RUN.isEmpty()
+                }
+            }
             steps {
                 container("node"){
                     script {
@@ -34,6 +40,11 @@ pipeline {
 
         //create updated dist/index.js file
         stage('Prepare build') {
+            when {
+                expression {
+                    !params.AUTO_RUN.isEmpty()
+                }
+            }
             steps {
                 container("node"){
                     script {
@@ -59,6 +70,7 @@ pipeline {
         stage('Create tag') {
             when {
                 expression {
+                    !params.AUTO_RUN.isEmpty()
                     //prevent 'create tag' stage from running if version number not provided
                     !params.VERSION_NUMBER.isEmpty()
                 }
@@ -80,12 +92,9 @@ pipeline {
                 //update dist/index.js file
                 sh """
                 if [ -f "dist/index.js" ]; then
-                    echo "File accessed!"
                     git add dist/index.js
                     git commit -am "Updating index.js file"
                     git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions
-                else
-                    echo "File not accessed"
                 fi
                 """
 
