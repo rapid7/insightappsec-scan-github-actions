@@ -42,7 +42,7 @@ pipeline {
                         then
                             rm -r node_modules
                         fi
-                        if[ -f "dist/index.js" ]
+                        if [ -f "dist/index.js" ]
                         then
                             rm  dist/index.js
                         fi
