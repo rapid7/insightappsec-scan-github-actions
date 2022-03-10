@@ -65,14 +65,6 @@ pipeline {
             }
             steps {
 
-                sh """
-                if [ "dist/index.js" ]; then 
-                    echo "Got the file."
-                else
-                    echo "No file."
-                fi                
-                """
-
                 withCredentials([usernamePassword(credentialsId: 'github-app-key', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                 sh label: 'git config user.email',
                 script: 'git config --global user.email github_serviceaccounts+$USERNAME@rapid7.com'
@@ -87,7 +79,7 @@ pipeline {
 
                 //update dist/index.js file
                 sh """
-                if [ git diff --name-only HEAD~1 HEAD | grep 'dist/index.js' ]; then
+                if [ -f "dist/index.js" ]; then
                     echo "File accessed!"
                     git add dist/index.js
                     git commit -am "Updating index.js file"
