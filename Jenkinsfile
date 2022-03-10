@@ -86,7 +86,7 @@ pipeline {
                 //update dist/index.js file
                 sh """
                 if [ -f "dist/index.js" ]; then
-                    if [ git diff --name-only HEAD~1 HEAD | grep "dist/index.js" ];
+                    if [ git diff --name-only HEAD HEAD~1 | grep "dist/index.js" ];
                     then 
                         git add dist/index.js
                         git commit -m "Updating index.js file"
