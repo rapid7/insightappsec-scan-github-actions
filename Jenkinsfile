@@ -83,7 +83,7 @@ pipeline {
                 sh label: 'git config user.name',
                 script: 'git config --global user.name $USERNAME'
 
-                //update dist/index.js file
+                //check-in index file, create tag and release
                 sh """
                 if [ -f "dist/index.js" ]; then 
                     git add dist/index.js
@@ -93,7 +93,7 @@ pipeline {
                     git tag ${params.VERSION_NUMBER}
                     git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions ${params.VERSION_NUMBER}
 
-                    gh auth login
+                    gh auth login --with-token
                     gh release create ${params.VERSION_NUMBER}
                 fi
                 """
