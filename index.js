@@ -66,7 +66,7 @@ async function performAction() {
 
             if(success) {
                 const result = await scanTools.getScanResultsSummary(scanId, vulnQuery, scanConfigId);
-                core.setOutput(OUTPUT_SCAN_FINDINGS, JSON.stringify({vulnerabilities: result.vulnerabilities, scanLink: result.scanLink}, null, 2));
+                core.setOutput(OUTPUT_SCAN_FINDINGS, JSON.stringify({results}, null, 2));
                 if (Object.keys(result).length != 0 && vulnQuery) {
                     core.setFailed("Vulnerabilities were found in scan. Failing.");
                 }
