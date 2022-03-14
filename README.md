@@ -65,26 +65,12 @@ The body of a vulnerability query cannot contain double quotes ("), single quote
 ```
 
 ## Development
-To develop new versions of this action
+To develop new versions of this action, the Jenkins CI pipeline can be used. 
 1. Make the required code updates and test
-2. Remove node_modules and reinstall with the --production flag
-```
-npm install --production
-```
-3. Globally install the build tool (only once)
-```
-npm i -g @vercel/ncc@0.31.1
-```
-4. From the root project directory, in a terminal execute
-```
-npm run build
-```
-5. Add the contents of the /dist directory to the changelist.
-6. Submit the changes for review.
-7. Once approved and merged a tag should also be created. It's this tag that's referenced in the implementing yaml file, the below example uses a v1.0.0 tag.
-```
-uses: rapid7/insightappsec-scan-github-actions@v1.0.0
-```
+2. Push changes to your local branch, to be picked up by the Jenkins pipeline.
+3. In the insightappsec-scan-github-actions folder on Jenkins VRM, create a new build with parameters for your branch. Provide a tag number, i.e. v1.0.0, and tick the RUN_PIPELINE checkbox.
+4. When the pipeline has successfully completed, checkout the master branch and create a yaml file in workflows/.github.
+5. Push your changes to kick-off a new scan based on your new tag.  
 
 ### Unit tests
 The unit tests use the jest framework. This can be installed using node package manager.
