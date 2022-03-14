@@ -93,8 +93,6 @@ pipeline {
                     git tag ${params.VERSION_NUMBER}
                     git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions ${params.VERSION_NUMBER}
 
-                    gh auth login --hostname ${USERNAME}
-                    gh release create ${params.VERSION_NUMBER}
                 fi
                 """
                 }  
