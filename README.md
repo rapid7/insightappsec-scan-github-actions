@@ -65,12 +65,24 @@ The body of a vulnerability query cannot contain double quotes ("), single quote
 ```
 
 ## Development
-To develop new versions of this action, the Jenkins CI pipeline can be used. 
-1. Make the required code updates and test
-2. Push changes to your local branch, to be picked up by the Jenkins pipeline.
-3. In the insightappsec-scan-github-actions folder on Jenkins VRM, create a new build with parameters for your branch. Provide a tag number, i.e. v1.0.0, and tick the RUN_PIPELINE checkbox.
-4. When the pipeline has successfully completed, checkout the master branch and create a yaml file in workflows/.github.
-5. Push your changes to kick-off a new scan based on your new tag.  
+To develop new versions of this action, we use a combination of manual testing and the Jenkins CI pipeline. 
+
+1. Make the required code updates and test locally.
+2. Create a fork on the repo.
+3. Delete previous tags. Local: git tag -d <tagname>   Remote: git push --delete origin <tagname>
+4. Delete dist/index.js.
+5. Remove node_modules folder.
+6. Build new file: npm run build.
+7. Create new tags. Local: git tag <tagname>     Remote: git push origin <tagname> 
+8. Push branch changes to Github.
+9. Checkout forked master branch and pull changes.
+10. Create yaml file in workflows/.github folder, as per https://wiki.corp.rapid7.com/display/EXT/GitHub+Scan+Action "Testing Changes" section.
+11. Add your AppSec API key to the forked repo as a secret named IAS_API_KEY.
+12. Push any changes to the forked master branch.
+13. If a scan is not kicked off automatically, make a further change to the forked repo, i.e. add an additional space to the READ_ME file.
+14. If the scan runs successfully, create a PR to the rapid7 master branch. Merging will kick-off the CI pipeline.
+15. In the insightappsec-scan-github-actions folder on Jenkins VRM, create a new build with parameters for your branch. Provide a tag number, i.e. v1.0.0, and tick the RUN_PIPELINE checkbox.
+16. If required, manually create a new release based on your new tag.
 
 ### Unit tests
 The unit tests use the jest framework. This can be installed using node package manager.
