@@ -5010,8 +5010,6 @@ async function performAction() {
             const startTimeMillis = new Date().getTime();
             core.info("Will check for scan status updates every 5 minutes.")
             const success = await scanTools.pollForScanComplete(scanId, startTimeMillis, scanTimeoutMins);
-
-
             
             if(success) {
                 const result = await scanTools.getScanResultsSummary(scanId, vulnQuery);
