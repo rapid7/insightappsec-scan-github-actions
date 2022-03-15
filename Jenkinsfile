@@ -27,12 +27,14 @@ pipeline {
                 }
             }
             steps {
+                container("node"){
                     script {
                         sh """
                         npm install --save-dev jest
                         npm t
                         """
                     }
+                }
             }
         }
 
@@ -44,6 +46,7 @@ pipeline {
                 }
             }
             steps {
+                container("node"){
                     script {
 
                         sh """
@@ -60,6 +63,7 @@ pipeline {
                         npm run build
                         """                        
                     }
+                }
             }
         }
 
