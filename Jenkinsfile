@@ -13,7 +13,7 @@ pipeline {
 
     parameters {
         string(name: 'POD_IDLE_MINUTES', defaultValue: '0', description: 'Number of minutes pod will stay idle post build')
-        string(name: 'VERSION_NUMBER', description: 'InsightAppSec Gitlab Scan version number')
+        string(name: 'VERSION_NUMBER', description: 'InsightAppSec Github Scan version number')
         booleanParam(name: 'RUN_PIPELINE', defaultValue: false, description: 'Option to trigger pipeline')
     }
 
@@ -27,14 +27,12 @@ pipeline {
                 }
             }
             steps {
-                container("node"){
                     script {
                         sh """
                         npm install --save-dev jest
                         npm t
                         """
                     }
-                }
             }
         }
 
@@ -46,7 +44,6 @@ pipeline {
                 }
             }
             steps {
-                container("node"){
                     script {
 
                         sh """
@@ -63,7 +60,6 @@ pipeline {
                         npm run build
                         """                        
                     }
-                }
             }
         }
 
