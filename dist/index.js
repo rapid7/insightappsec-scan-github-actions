@@ -5011,6 +5011,8 @@ async function performAction() {
             core.info("Will check for scan status updates every 5 minutes.")
             const success = await scanTools.pollForScanComplete(scanId, startTimeMillis, scanTimeoutMins);
 
+
+            
             if(success) {
                 const result = await scanTools.getScanResultsSummary(scanId, vulnQuery);
                 core.setOutput(OUTPUT_SCAN_FINDINGS, JSON.stringify({vulnerabilities: result}, null, 2));
