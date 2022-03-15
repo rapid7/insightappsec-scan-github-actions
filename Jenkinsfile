@@ -1,16 +1,5 @@
 pipeline {
 
-    agent {
-        kubernetes (
-            k8sAgent(
-            name: 'nodeJs', 
-            nodeJS: "14.17.0-slim",
-            idleMinutes: params.POD_IDLE_MINUTES
-            )
-        )
-    }
-
-
     parameters {
         string(name: 'POD_IDLE_MINUTES', defaultValue: '0', description: 'Number of minutes pod will stay idle post build')
         string(name: 'VERSION_NUMBER', description: 'InsightAppSec Github Scan version number')
