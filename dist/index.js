@@ -4966,6 +4966,7 @@ function isInputValid(key, value) {
     return true;
 }
 
+
 async function performAction() {
     const region = core.getInput(INPUT_REGION);
     const apiKey = core.getInput(INPUT_API_KEY);
