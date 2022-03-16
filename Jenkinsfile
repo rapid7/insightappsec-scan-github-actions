@@ -37,6 +37,7 @@ pipeline {
             when {
                 expression {
                     params.RUN_PIPELINE
+                    !params.VERSION_NUMBER.isEmpty()
                 }
             }
             steps {
@@ -65,7 +66,6 @@ pipeline {
             when {
                 expression {
                     params.RUN_PIPELINE
-                    //prevent 'create tag' stage from running if version number not provided
                     !params.VERSION_NUMBER.isEmpty()
                 }
             }
