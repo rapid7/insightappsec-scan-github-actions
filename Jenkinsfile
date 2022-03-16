@@ -80,7 +80,7 @@ pipeline {
                 //check-in index file, create tag and release
                 sh """
                 if [ -f "dist/index.js" ]; then 
-                    git pull https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions
+                    git pull  --ff-only https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions
                     git add dist/index.js
                     git commit -m "Updating index.js file"
                     git push https://${USERNAME}:${PASSWORD}@github.com/rapid7/insightappsec-scan-github-actions
