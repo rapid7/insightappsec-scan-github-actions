@@ -13,7 +13,7 @@ pipeline {
     parameters {
         string(name: 'POD_IDLE_MINUTES', defaultValue: '0', description: 'Number of minutes pod will stay idle post build')
         string(name: 'VERSION_NUMBER', description: 'InsightAppSec Github Scan tag version number')
-        booleanParam(name: 'RUN_PIPELINE', defaultValue: false, description: 'Option to trigger pipeline')
+        booleanParam(name: 'RUN_PIPELINE', defaultValue: false, description: 'Option to build files and create tag')
     }
 
     stages {
