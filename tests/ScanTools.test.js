@@ -29,8 +29,8 @@ describe("ScanTools tests", () => {
         const spy = jest.spyOn(InsightAppSecClient.prototype, "getScanVulnerabilities");
         spy.mockImplementationOnce(() => testData.scanVulnsPg1);
         spy.mockImplementationOnce(() => testData.scanVulnsPg2);
-        const result = await tools.getScanResultsSummary("scanID", "vulnQuery");
-        expect(result).toEqual({ MEDIUM: 2, LOW: 8, INFORMATIONAL: 21, SAFE: 1 });
+        const result = await tools.getScanResultsSummary("scanID", "vulnQuery", "scanconfigid");
+        expect(result).toEqual({vulnerabilities: { MEDIUM: 2, LOW: 8, INFORMATIONAL: 21, SAFE: 1 }, scanLink: "www.example.com/123#/apps/myvalue/configuration/scanconfigid/scan/scanID"});
     });
 
     it("hasTimeoutExceeded test", () => {
