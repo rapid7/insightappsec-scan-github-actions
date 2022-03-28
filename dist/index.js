@@ -7,7 +7,7 @@
 const axios = __nccwpck_require__(1664);
 
 const APPLICATION_JSON = "application/json";
-const USER_AGENT_HEADER = "r7:insightappsec-github-actions/1.2.0";
+const USER_AGENT_HEADER = "r7:insightappsec-github-actions/1.3.0";
 
 class InsightAppSecClient {
 
@@ -79,6 +79,47 @@ function getNext(links) {
     }
 
     return links.find(link => link.rel === "next"); // returns undefined when not found
+}
+
+function setUiUrl(results, scanId, scanConfigId) {
+
+    let insightUiUrl = "";
+    let appId = "";
+    let orgToken = "";
+
+    if(!results.data.data || !results.data.data.length){
+        core.debug("No results found");
+        return;
+    }
+
+    if(!results.data.data[0].app.id){
+        core.debug("App ID not found.");
+        return;
+    } 
+
+    appId = results.data.data[0].app.id;
+
+    if(!results.data.data[0].insight_ui_url){
+        core.debug("insight_ui_url not found.");
+        return;
+    }
+
+    insightUiUrl = results.data.data[0].insight_ui_url;
+
+    if(!insightUiUrl){
+        core.debug("insight_ui_url not found.");
+        return;
+    }
+
+    insightUiUrl = insightUiUrl.split("#");
+    orgToken = insightUiUrl[0];
+
+    if(!orgToken){
+        core.debug("Org Token not found.");
+        return;
+    }
+
+    return `${orgToken}#/apps/${appId}/configuration/${scanConfigId}/scan/${scanId}`;
 }
 
 module.exports = class ScanTools{
@@ -158,9 +199,10 @@ module.exports = class ScanTools{
         return COMPLETE_STATUS.includes(status);
     }
 
-    async getScanResultsSummary(scanId, vulnQuery) {
+    async getScanResultsSummary(scanId, vulnQuery, scanConfigId) {
         let next = {};
         let resultSummary = {};
+        let uiUrl = "";
 
         do {
             let results = await this.client.getScanVulnerabilities(scanId, vulnQuery, next.href); // eslint-disable-line
@@ -170,11 +212,20 @@ module.exports = class ScanTools{
                 return null;
             }
 
+            if(!uiUrl){
+                try{
+                    uiUrl = setUiUrl(results, scanId, scanConfigId);
+                }
+                catch(e) {
+                    core.error(`Error retrieving Insight UI URL: ${e}`);
+                }
+            }
+
             resultSummary = this.compileResults(resultSummary, results.data.data);
             next = getNext(results.data.links);
         } while(next);
 
-        return resultSummary;
+        return {vulnerabilities: resultSummary, scanLink: uiUrl};
     }
 
     compileResults(total = {}, currentPage) {
@@ -4333,8 +4384,9 @@ RedirectableRequest.prototype._processResponse = function (response) {
     var redirectUrlParts = url.parse(redirectUrl);
     Object.assign(this._options, redirectUrlParts);
 
-    // Drop the confidential headers when redirecting to another domain
-    if (!(redirectUrlParts.host === currentHost || isSubdomainOf(redirectUrlParts.host, currentHost))) {
+    // Drop confidential headers when redirecting to another scheme:domain
+    if (redirectUrlParts.protocol !== currentUrlParts.protocol ||
+       !isSameOrSubdomain(redirectUrlParts.host, currentHost)) {
       removeMatchingHeaders(/^(?:authorization|cookie)$/i, this._options.headers);
     }
 
@@ -4500,7 +4552,10 @@ function abortRequest(request) {
   request.abort();
 }
 
-function isSubdomainOf(subdomain, domain) {
+function isSameOrSubdomain(subdomain, domain) {
+  if (subdomain === domain) {
+    return true;
+  }
   const dot = subdomain.length - domain.length - 1;
   return dot > 0 && subdomain[dot] === "." && subdomain.endsWith(domain);
 }
@@ -5012,8 +5067,8 @@ async function performAction() {
             const success = await scanTools.pollForScanComplete(scanId, startTimeMillis, scanTimeoutMins);
 
             if(success) {
-                const result = await scanTools.getScanResultsSummary(scanId, vulnQuery);
-                core.setOutput(OUTPUT_SCAN_FINDINGS, JSON.stringify({vulnerabilities: result}, null, 2));
+                const result = await scanTools.getScanResultsSummary(scanId, vulnQuery, scanConfigId);
+                core.setOutput(OUTPUT_SCAN_FINDINGS, JSON.stringify(result, null, 2));
                 if (Object.keys(result).length != 0 && vulnQuery) {
                     core.setFailed("Vulnerabilities were found in scan. Failing.");
                 }
