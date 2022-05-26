@@ -6136,7 +6136,7 @@ function isInputValid(key, value) {
 
 async function performAction() {
     const region = core.getInput(INPUT_REGION);
-    const apiKey = "fakeAPI"; //core.getInput(INPUT_API_KEY);
+    const apiKey = core.getInput(INPUT_API_KEY);
     const scanConfigId = "fakeScanConfigID"; //core.getInput(INPUT_SCAN_CONFIG_ID);
     const vulnQuery = core.getInput(INPUT_VULN_QUERY) || null;
     const waitScanComplete = core.getBooleanInput(INPUT_WAIT_SCAN_COMPLETE);
