@@ -77,7 +77,11 @@ async function performAction() {
         }
     }
     catch(e) {
-        core.error(`An error occurred with the scan: ${e}`);
+        if(e.response.data.status != undefined){
+            core.error(`An error occurred with the scan: ${e}. Status: ` + `${e.response.data.status} ` + `${e.response.data.message}`);
+        } else {
+            core.error(`An error occurred with the scan: ${e}. ` + `${e.response.data.message}`);
+        }
     }
 }
 
