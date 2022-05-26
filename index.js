@@ -51,7 +51,6 @@ async function performAction() {
     {
         return;
     }
-
     
     const scanTools = new ScanTools(new InsightAppSecClient(region, apiKey), scanTimeoutMins);
 
