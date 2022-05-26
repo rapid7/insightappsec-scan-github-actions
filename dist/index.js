@@ -322,6 +322,7 @@ async function performAction() {
         return;
     }
 
+    
     const scanTools = new ScanTools(new InsightAppSecClient(region, apiKey), scanTimeoutMins);
 
     try {
@@ -347,7 +348,7 @@ async function performAction() {
         }
     }
     catch(e) {
-        core.error(`An error occurred with the scan: ${e}`);
+        core.error(`An error occurred with the scan: ${e}: ` + `${e.response.statusText}`);
     }
 }
 
