@@ -78,7 +78,7 @@ async function performAction() {
         }
     }
     catch(e) {
-        core.error(`An error occurred with the scan: ${e}`);
+        core.error(`An error occurred with the scan: ${e}: ` + `${e.response.statusText}`);
     }
 }
 
