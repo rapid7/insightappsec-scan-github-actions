@@ -9,6 +9,7 @@ const INPUT_VULN_QUERY = "vuln-query";
 const INPUT_WAIT_SCAN_COMPLETE = "wait-for-scan-complete";
 const INPUT_SCAN_TIMEOUT_MINS = "scan-timeout-mins";
 const OUTPUT_SCAN_FINDINGS = "scan-findings";
+const OUTPUT_SCAN_ID = "scan-id";
 
 function isInputValid(key, value) {
     if(!value) {
@@ -56,8 +57,9 @@ async function performAction() {
 
     try {
         const scanId = await scanTools.startScan(scanConfigId);
+        core.setOutput(OUTPUT_SCAN_ID, scanId);  
         if (!waitScanComplete) {
-            core.setOutput(OUTPUT_SCAN_FINDINGS, `Scan ID: ${scanId}`);
+            core.setOutput(OUTPUT_SCAN_ID, scanId);
         }
         else {
             const startTimeMillis = new Date().getTime();
