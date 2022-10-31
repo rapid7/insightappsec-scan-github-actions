@@ -77,10 +77,32 @@ async function performAction() {
         }
     }
     catch(e) {
-        core.error(`An error occurred with the scan: ${e}`);
+        printErrorMessage(e);
     }
 }
 
 performAction().catch( (error) => {
     core.error(`An error occurred during the action ${error}`);
 });
+
+function printErrorMessage(error){
+
+    let messagePrinted = false;
+
+    if(error.response && error.response.data) {
+
+        if(error.response.data.message) {
+            messagePrinted = true;
+
+            if(error.response.data.status) {
+                core.error(`An error occurred with the scan: ${error}. Status: ` + `${error.response.data.status} ` + `${error.response.data.message}`);
+            } else {
+                core.error(`An error occurred with the scan: ${error}. ` + `${error.response.data.message}`); 
+            }
+        }
+    }
+
+    if(!messagePrinted) {
+        core.error(`An error occurred with the scan: ${error}. `);
+    }
+}
