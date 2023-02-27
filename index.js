@@ -8,6 +8,7 @@ const INPUT_SCAN_CONFIG_ID = "scan-config-id";
 const INPUT_VULN_QUERY = "vuln-query";
 const INPUT_WAIT_SCAN_COMPLETE = "wait-for-scan-complete";
 const INPUT_SCAN_TIMEOUT_MINS = "scan-timeout-mins";
+const INPUT_POLL_INTERVAL_MINS = "poll-interval-mins";
 const OUTPUT_SCAN_FINDINGS = "scan-findings";
 
 function isInputValid(key, value) {
@@ -26,6 +27,7 @@ async function performAction() {
     const vulnQuery = core.getInput(INPUT_VULN_QUERY) || null;
     const waitScanComplete = core.getBooleanInput(INPUT_WAIT_SCAN_COMPLETE);
     let scanTimeoutMins = core.getInput(INPUT_SCAN_TIMEOUT_MINS) || null;
+    let pollIntervalMins = core.getInput(INPUT_POLL_INTERVAL_MINS) || null;
 
     if(scanTimeoutMins) {
         try{
@@ -41,6 +43,21 @@ async function performAction() {
             return;
         }
     }
+
+    if(pollIntervalMins) {
+        try{
+            pollIntervalMins = parseInt(pollIntervalMins);
+            if(isNaN(pollIntervalMins)) {
+                throw Error("Poll interval is NaN");
+            }
+
+            core.info(`Poll interval: ${pollIntervalMins} mins`);
+        }
+        catch(e) {
+            core.setFailed("Poll interval should be an integer");
+            return;
+        }
+    }    
     
     core.info(`Scan gating query: ${vulnQuery}`);
     core.info(`Wait for scan complete: ${waitScanComplete}`);
@@ -52,7 +69,7 @@ async function performAction() {
         return;
     }
 
-    const scanTools = new ScanTools(new InsightAppSecClient(region, apiKey), scanTimeoutMins);
+    const scanTools = new ScanTools(new InsightAppSecClient(region, apiKey), scanTimeoutMins, pollIntervalMins);
 
     try {
         const scanId = await scanTools.startScan(scanConfigId);
