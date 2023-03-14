@@ -35,5 +35,5 @@ outputs:
   scan-findings:
       description: "A raw JSON report containing all findings from a completed scan."
 runs:
-  using: node12
+  using: node16
   main: dist/index.js
