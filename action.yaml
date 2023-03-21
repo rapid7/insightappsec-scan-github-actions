@@ -30,6 +30,11 @@ inputs:
     description: >
       The maximum amount of time (in minutes) the scan is allowed to run before canceling and failing the job.
     required: false
+  poll-interval-mins:
+    description: >
+      The amount of time (in minutes) to wait between attempts to poll the scan status. Default: 5mins
+    required: false
+  
 
 outputs:
   scan-findings:
