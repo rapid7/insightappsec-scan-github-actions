@@ -1,0 +1,14 @@
+---
+info:
+  title: Insightappsec Scan Github Actions
+  x-cortex-git:
+    github:
+      alias: r7org
+      repository: rapid7/insightappsec-scan-github-actions
+  x-cortex-tag: insightappsec-scan-github-actions
+  x-cortex-type: service
+  x-cortex-domain-parents:
+  - tag: ias-integration
+openapi: 3.0.1
+servers:
+- url: "/"
