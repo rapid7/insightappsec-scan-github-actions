@@ -12,16 +12,16 @@
     "license": "ISC",
     "dependencies": {
         "@actions/core": "1.10.0",
-        "axios": "0.24.0"
+        "axios": "^0.28.1"
     },
     "devDependencies": {
-        "@vercel/ncc": "0.31.1",
+        "@vercel/ncc": "^0.38.1",
         "eslint": "7.31.0",
         "eslint-config-node": "4.1.0",
-        "eslint-plugin-node": "11.1.0",
         "eslint-config-prettier": "8.3.0",
+        "eslint-plugin-node": "11.1.0",
         "eslint-plugin-prettier": "3.4.0",
-        "prettier": "2.3.2",
-        "jest": "27.4.3"
+        "jest": "27.4.3",
+        "prettier": "2.3.2"
     }
 }
