@@ -34,6 +34,8 @@ inputs:
 outputs:
   scan-findings:
       description: "A raw JSON report containing all findings from a completed scan."
+  scan-id:
+      description: "The ID of the current scan that was run."
 runs:
   using: node20
   main: dist/index.js
