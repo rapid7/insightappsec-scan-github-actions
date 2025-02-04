@@ -9,6 +9,9 @@ info:
   x-cortex-type: service
   x-cortex-domain-parents:
   - tag: ias-integration
+  x-cortex-groups:
+  - exposure:external-ship
+  - target:development-tool
 openapi: 3.0.1
 servers:
 - url: "/"
