@@ -11383,13 +11383,13 @@ async function performAction() {
             return;
         }
     }
-    
+
     core.info(`Scan gating query: ${vulnQuery}`);
     core.info(`Wait for scan complete: ${waitScanComplete}`);
 
-    if(!isInputValid(INPUT_REGION, region) || 
-       !isInputValid(INPUT_API_KEY, apiKey) || 
-       !isInputValid(INPUT_SCAN_CONFIG_ID, scanConfigId)) 
+    if(!isInputValid(INPUT_REGION, region) ||
+       !isInputValid(INPUT_API_KEY, apiKey) ||
+       !isInputValid(INPUT_SCAN_CONFIG_ID, scanConfigId))
     {
         return;
     }
@@ -11419,12 +11419,12 @@ async function performAction() {
         }
     }
     catch(e) {
-        core.error(`An error occurred with the scan: ${e}`);
+        core.setFailed(`An error occurred with the scan: ${e}`);
     }
 }
 
 performAction().catch( (error) => {
-    core.error(`An error occurred during the action ${error}`);
+    core.setFailed(`An error occurred during the action ${error}`);
 });
 })();
 
