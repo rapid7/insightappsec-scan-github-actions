@@ -36194,7 +36194,7 @@ var {
 
 // api/InsightAppSecClient.js
 var APPLICATION_JSON = "application/json";
-var USER_AGENT_HEADER = "r7:insightappsec-github-actions/1.4.0";
+var USER_AGENT_HEADER = "r7:insightappsec-github-actions/1.5.0";
 var InsightAppSecClient = class {
   constructor(region, apiKey) {
     this.baseUrl = `https://${region}.api.insight.rapid7.com/ias/v1/`;
