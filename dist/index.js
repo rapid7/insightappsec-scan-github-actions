@@ -40827,7 +40827,7 @@ axios.default = axios;
 
 
 const APPLICATION_JSON = "application/json";
-const USER_AGENT_HEADER = "r7:insightappsec-github-actions/1.3.5";
+const USER_AGENT_HEADER = "r7:insightappsec-github-actions/1.4.0";
 
 class InsightAppSecClient {
 
