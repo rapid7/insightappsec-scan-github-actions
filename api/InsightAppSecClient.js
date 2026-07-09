@@ -1,4 +1,4 @@
-const axios = require("axios");
+import axios from "axios";
 
 const APPLICATION_JSON = "application/json";
 const USER_AGENT_HEADER = "r7:insightappsec-github-actions/1.3.5";
@@ -51,4 +51,4 @@ class InsightAppSecClient {
     }
 }
 
-module.exports = InsightAppSecClient;
+export default InsightAppSecClient;

@@ -1,12 +1,31 @@
-const core = require("@actions/core");
-const InsightAppSecClient = require("../api/InsightAppSecClient");
-const ScanTools = require("../lib/ScanTools");
-const testData = require("./testdata");
+import { jest } from "@jest/globals";
+import InsightAppSecClient from "../api/InsightAppSecClient.js";
+import * as testData from "./testdata.js";
+
+// Mock @actions/core for ESM
+const mockInfo = jest.fn();
+const mockError = jest.fn();
+const mockDebug = jest.fn();
+
+jest.unstable_mockModule("@actions/core", () => ({
+    info: mockInfo,
+    error: mockError,
+    debug: mockDebug,
+    setFailed: jest.fn(),
+    getInput: jest.fn(),
+    setOutput: jest.fn(),
+}));
+
+const { default: ScanTools } = await import("../lib/ScanTools.js");
 
 const client = new InsightAppSecClient("region", "apiKey");
 const tools = new ScanTools(client, null, 1000);
 
 describe("ScanTools tests", () => {
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
 
     it("async startScan test", async () => {
         const spy = jest.spyOn(InsightAppSecClient.prototype, "startScan");
@@ -19,10 +38,9 @@ describe("ScanTools tests", () => {
         const spy = jest.spyOn(InsightAppSecClient.prototype, "getScan");
         spy.mockImplementationOnce(() => testData.scanStatusRunning);
         spy.mockImplementationOnce(() => testData.scanStatusComplete);
-        const logSpy = jest.spyOn(core, "info");
         await tools.pollForScanComplete("scanID");
-        expect(logSpy).toHaveBeenCalledWith("Scan is currently in status RUNNING")
-        expect(logSpy).toHaveBeenCalledWith("Scan is currently in status COMPLETE")
+        expect(mockInfo).toHaveBeenCalledWith("Scan is currently in status RUNNING")
+        expect(mockInfo).toHaveBeenCalledWith("Scan is currently in status COMPLETE")
     });
 
     it("getScanResultsSummary test", async () => {

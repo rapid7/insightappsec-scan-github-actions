@@ -1,5 +1,6 @@
-const InsightAppSecClient = require("../api/InsightAppSecClient");
-const testData = require("./testdata");
+import { jest } from "@jest/globals";
+import InsightAppSecClient from "../api/InsightAppSecClient.js";
+import * as testData from "./testdata.js";
 
 const iasClient = new InsightAppSecClient("region", "apiKey");
 
