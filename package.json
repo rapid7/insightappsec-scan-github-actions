@@ -13,7 +13,7 @@
     "license": "ISC",
     "dependencies": {
         "@actions/core": "^3.0.1",
-        "axios": "^1.11.0"
+        "axios": "^1.18.1"
     },
     "devDependencies": {
         "@vercel/ncc": "^0.38.1",
