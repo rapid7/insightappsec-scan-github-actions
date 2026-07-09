@@ -7,7 +7,7 @@
     "scripts": {
         "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
         "coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
-        "build": "ncc build index.js -o dist"
+        "build": "esbuild index.js --bundle --platform=node --format=esm --outfile=dist/index.js --banner:js=\"import { createRequire } from 'module'; const require = createRequire(import.meta.url);\""
     },
     "author": "",
     "license": "ISC",
@@ -17,6 +17,7 @@
     },
     "devDependencies": {
         "@vercel/ncc": "^0.38.1",
+        "esbuild": "^0.25.0",
         "eslint": "7.31.0",
         "eslint-config-node": "4.1.0",
         "eslint-config-prettier": "8.3.0",
