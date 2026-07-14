@@ -1,6 +1,6 @@
-const core = require("@actions/core");
-const InsightAppSecClient = require("./api/InsightAppSecClient");
-const ScanTools = require("./lib/ScanTools");
+import * as core from "@actions/core";
+import InsightAppSecClient from "./api/InsightAppSecClient.js";
+import ScanTools from "./lib/ScanTools.js";
 
 const INPUT_REGION = "region";
 const INPUT_API_KEY = "api-key";

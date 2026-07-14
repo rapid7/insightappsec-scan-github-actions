@@ -1,0 +1,14 @@
+name: Test Action
+on: workflow_dispatch
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./
+        with:
+          region: "us"
+          api-key: ${{ secrets.IAS_API_KEY }}
+          scan-config-id: ${{ secrets.SCAN_CONFIG_ID }}
+          vuln-query: "vulnerability.vulnerabilityScore > 0"
