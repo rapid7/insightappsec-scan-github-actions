@@ -52,4 +52,23 @@ describe("InsightAppSecClient tests", () => {
             query: "vulnerability.scans.id='scan-123'"
         });
     });
+
+    // Mythos #193852 (CWE-918): region is spliced into the API host, so it must be validated.
+    it.each(["us", "us2", "us3", "eu", "ca", "au", "ap"])(
+        "accepts valid region %s", (region) => {
+            expect(() => new InsightAppSecClient(region, "k")).not.toThrow();
+        });
+
+    it.each([
+        "evil.com/",
+        "attacker.com#",
+        "us.api.insight.rapid7.com@evil.com",
+        "../",
+        "us/../../x",
+        "",
+        "US",
+        "someregion"
+    ])("rejects host-altering region %p", (region) => {
+        expect(() => new InsightAppSecClient(region, "k")).toThrow(/Invalid region/);
+    });
 });

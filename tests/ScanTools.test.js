@@ -18,7 +18,7 @@ jest.unstable_mockModule("@actions/core", () => ({
 
 const { default: ScanTools } = await import("../lib/ScanTools.js");
 
-const client = new InsightAppSecClient("region", "apiKey");
+const client = new InsightAppSecClient("us", "apiKey");
 const tools = new ScanTools(client, null, 1000);
 
 describe("ScanTools tests", () => {

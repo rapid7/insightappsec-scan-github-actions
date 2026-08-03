@@ -36197,6 +36197,9 @@ var APPLICATION_JSON = "application/json";
 var USER_AGENT_HEADER = "r7:insightappsec-github-actions/1.5.0";
 var InsightAppSecClient = class {
   constructor(region, apiKey) {
+    if (typeof region !== "string" || !/^[a-z]{2}[0-9]?$/.test(region)) {
+      throw new Error(`Invalid region: ${region}`);
+    }
     this.baseUrl = `https://${region}.api.insight.rapid7.com/ias/v1/`;
     this.axiosInst = axios_default.create({
       baseURL: this.baseUrl,
