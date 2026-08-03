@@ -1,0 +1,28 @@
+name: Verify dist is in sync
+
+# The action runs the committed dist/index.js bundle (see action.yaml), so a PR
+# whose source changed without rebuilding — or whose bundle was tampered with —
+# would ship code that does not match source (Mythos #193853, CWE-494).
+# This gate rebuilds from source and fails if the committed bundle differs.
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+jobs:
+  verify-dist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - name: Fail if dist/ differs from a fresh build of source
+        run: |
+          if ! git diff --exit-code -- dist/; then
+            echo "::error::dist/ is out of sync with source. Run 'npm run build' and commit the result."
+            exit 1
+          fi
