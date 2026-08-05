@@ -1,5 +1,5 @@
 import { jest } from "@jest/globals";
-import InsightAppSecClient from "../api/InsightAppSecClient.js";
+import InsightAppSecClient, { isValidRegion, VALID_REGIONS } from "../api/InsightAppSecClient.js";
 import * as testData from "./testdata.js";
 
 const iasClient = new InsightAppSecClient("us", "test-api-key");
@@ -53,10 +53,29 @@ describe("InsightAppSecClient tests", () => {
         });
     });
 
-    // Mythos #193852 (CWE-918): region is spliced into the API host, so it must be validated.
+    // Mythos #193852 (CWE-918): region selects the API host, so it must come from
+    // a fixed allowlist rather than being spliced into the URL.
     it.each(["us", "us2", "us3", "eu", "ca", "au", "ap"])(
         "accepts valid region %s", (region) => {
             expect(() => new InsightAppSecClient(region, "k")).not.toThrow();
+        });
+
+    it("the allowlist is exactly the supported regions", () => {
+        expect([...VALID_REGIONS]).toEqual(["us", "us2", "us3", "eu", "ca", "au", "ap"]);
+    });
+
+    it.each([...VALID_REGIONS])("resolves %s to its own rapid7.com host", (region) => {
+        const url = new URL(new InsightAppSecClient(region, "k").baseUrl);
+        expect(url.protocol).toEqual("https:");
+        expect(url.host).toEqual(`${region}.api.insight.rapid7.com`);
+    });
+
+    // Object.freeze on a plain object still inherits Object.prototype, so a lookup
+    // by truthiness would resolve these to functions rather than rejecting them.
+    it.each(["constructor", "toString", "hasOwnProperty", "valueOf"])(
+        "does not treat inherited property %p as a region", (key) => {
+            expect(isValidRegion(key)).toBe(false);
+            expect(() => new InsightAppSecClient(key, "k")).toThrow(/Invalid region/);
         });
 
     it.each([
@@ -66,9 +85,28 @@ describe("InsightAppSecClient tests", () => {
         "../",
         "us/../../x",
         "",
-        "US",
-        "someregion"
+        "someregion",
+        "us us",
+        "us\nevil.com/",
+        "us\revil.com/",
+        "zz",
+        "us4",
+        null,
+        undefined
     ])("rejects host-altering region %p", (region) => {
         expect(() => new InsightAppSecClient(region, "k")).toThrow(/Invalid region/);
+    });
+
+    // DNS is case-insensitive, so these resolved before the validation existed and
+    // must keep working, but they still have to end up on a rapid7.com host.
+    it.each(["US", "Eu", " us ", "US2"])("normalises valid region %p", (region) => {
+        const client = new InsightAppSecClient(region, "k");
+        expect(new URL(client.baseUrl).host).toEqual(`${region.trim().toLowerCase()}.api.insight.rapid7.com`);
+    });
+
+    it.each(["us", "eu", "us2"])("keeps the resolved host on rapid7.com for %p", (region) => {
+        const url = new URL(new InsightAppSecClient(region, "k").baseUrl);
+        expect(url.protocol).toEqual("https:");
+        expect(url.host).toEqual(`${region}.api.insight.rapid7.com`);
     });
 });

@@ -36195,12 +36195,28 @@ var {
 // api/InsightAppSecClient.js
 var APPLICATION_JSON = "application/json";
 var USER_AGENT_HEADER = "r7:insightappsec-github-actions/1.5.0";
+var REGION_BASE_URLS = Object.freeze({
+  us: "https://us.api.insight.rapid7.com/ias/v1/",
+  us2: "https://us2.api.insight.rapid7.com/ias/v1/",
+  us3: "https://us3.api.insight.rapid7.com/ias/v1/",
+  eu: "https://eu.api.insight.rapid7.com/ias/v1/",
+  ca: "https://ca.api.insight.rapid7.com/ias/v1/",
+  au: "https://au.api.insight.rapid7.com/ias/v1/",
+  ap: "https://ap.api.insight.rapid7.com/ias/v1/"
+});
+var VALID_REGIONS = Object.freeze(Object.keys(REGION_BASE_URLS));
+function normaliseRegion(region) {
+  return typeof region === "string" ? region.trim().toLowerCase() : "";
+}
+function isValidRegion(region) {
+  return Object.prototype.hasOwnProperty.call(REGION_BASE_URLS, normaliseRegion(region));
+}
 var InsightAppSecClient = class {
   constructor(region, apiKey) {
-    if (typeof region !== "string" || !/^[a-z]{2}[0-9]?$/.test(region)) {
+    if (!isValidRegion(region)) {
       throw new Error(`Invalid region: ${region}`);
     }
-    this.baseUrl = `https://${region}.api.insight.rapid7.com/ias/v1/`;
+    this.baseUrl = REGION_BASE_URLS[normaliseRegion(region)];
     this.axiosInst = axios_default.create({
       baseURL: this.baseUrl,
       headers: {
@@ -36424,6 +36440,10 @@ async function performAction() {
   info(`Scan gating query: ${vulnQuery}`);
   info(`Wait for scan complete: ${waitScanComplete}`);
   if (!isInputValid(INPUT_REGION, region) || !isInputValid(INPUT_API_KEY, apiKey) || !isInputValid(INPUT_SCAN_CONFIG_ID, scanConfigId)) {
+    return;
+  }
+  if (!isValidRegion(region)) {
+    setFailed(`${INPUT_REGION} must be one of: ${VALID_REGIONS.join(", ")}`);
     return;
   }
   const scanTools = new ScanTools(new InsightAppSecClient_default(region, apiKey), scanTimeoutMins);

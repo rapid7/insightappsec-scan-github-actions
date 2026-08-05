@@ -1,5 +1,5 @@
 import * as core from "@actions/core";
-import InsightAppSecClient from "./api/InsightAppSecClient.js";
+import InsightAppSecClient, { isValidRegion, VALID_REGIONS } from "./api/InsightAppSecClient.js";
 import ScanTools from "./lib/ScanTools.js";
 
 const INPUT_REGION = "region";
@@ -49,6 +49,14 @@ async function performAction() {
        !isInputValid(INPUT_API_KEY, apiKey) ||
        !isInputValid(INPUT_SCAN_CONFIG_ID, scanConfigId))
     {
+        return;
+    }
+
+    // Rejected here, before the value can reach the API host, so a bad region is
+    // reported as the configuration error it is rather than surfacing from the
+    // generic scan-failure handler (Mythos #193852, CWE-918).
+    if(!isValidRegion(region)) {
+        core.setFailed(`${INPUT_REGION} must be one of: ${VALID_REGIONS.join(", ")}`);
         return;
     }
 
