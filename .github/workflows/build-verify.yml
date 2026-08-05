@@ -26,9 +26,13 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
+      # git status --porcelain (not git diff) so the check also catches files
+      # ADDED to dist/. git diff only reports tracked files, so an untracked
+      # dist/injected.js would slip through a diff-based gate.
       - name: Fail if dist/ differs from a fresh build of source
         run: |
-          if ! git diff --exit-code -- dist/; then
+          if [ -n "$(git status --porcelain -- dist/)" ]; then
+            git status --porcelain -- dist/
             echo "::error::dist/ is out of sync with source. Run 'npm run build' and commit the result."
             exit 1
           fi

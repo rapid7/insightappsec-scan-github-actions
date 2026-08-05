@@ -7,7 +7,7 @@
     "scripts": {
         "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
         "coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
-        "build": "esbuild index.js --bundle --platform=node --format=esm --outfile=dist/index.js --banner:js=\"import { createRequire } from 'module'; const require = createRequire(import.meta.url);\""
+        "build": "node scripts/build.js"
     },
     "author": "",
     "license": "ISC",
