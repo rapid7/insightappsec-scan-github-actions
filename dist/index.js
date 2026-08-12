@@ -36194,7 +36194,7 @@ var {
 
 // api/InsightAppSecClient.js
 var APPLICATION_JSON = "application/json";
-var USER_AGENT_HEADER = "r7:insightappsec-github-actions/1.5.0";
+var USER_AGENT_HEADER = "r7:insightappsec-github-actions/1.5.1";
 var REGION_BASE_URLS = Object.freeze({
   us: "https://us.api.insight.rapid7.com/ias/v1/",
   us2: "https://us2.api.insight.rapid7.com/ias/v1/",
